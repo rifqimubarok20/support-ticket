@@ -9,6 +9,7 @@ class Kategori extends Model
 {
     use HasFactory;
 
+    protected $connection  = 'mysql2';
     public $table = "kategori";
 
     protected $fillable = [

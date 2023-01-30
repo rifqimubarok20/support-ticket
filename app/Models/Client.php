@@ -9,6 +9,7 @@ class Client extends Model
 {
     use HasFactory;
 
+    protected $connection  = 'mysql2';
     public $table = "client";
 
     protected $fillable = [

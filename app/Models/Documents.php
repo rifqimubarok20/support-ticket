@@ -9,6 +9,7 @@ class Documents extends Model
 {
     use HasFactory;
 
+    protected $connection  = 'mysql2';
     public $table = 'documents';
 
     protected $fillable = [
