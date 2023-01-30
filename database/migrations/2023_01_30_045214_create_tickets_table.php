@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->references('id')->on('product')->onDelete('cascade');
-            $table->foreignId('client_id')->references('id')->on('client')->onDelete('cascade');
+            $table->foreignId('product_id');
+            $table->foreignId('client_id');
             $table->longText('issue');
             $table->string('file');
-            $table->foreignId('user_id')->nullable()->references('id')->on('user')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable();
             $table->enum('status', ['to do', 'on progress', 'testing', 'staging', 'done'])->default('to do');
             $table->longText('description')->nullable();
             $table->timestamps();
