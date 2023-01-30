@@ -17,7 +17,6 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $connection  = 'mysql2';
     protected $fillable = [
         'name',
         'email',
@@ -42,4 +41,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function client() {
+        return $this->hasMany(Client::class);
+    }
 }
