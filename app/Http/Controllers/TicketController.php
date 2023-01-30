@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class TicketController extends Controller
 {
     public function index() {
-        $ticket = Ticket::all();
+        $ticket = Ticket::with('product', 'client', 'user')->get();
         dd($ticket);
     }
 }
