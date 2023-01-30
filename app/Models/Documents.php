@@ -9,7 +9,6 @@ class Documents extends Model
 {
     use HasFactory;
 
-    protected $connection  = 'mysql2';
     public $table = 'documents';
 
     protected $fillable = [
@@ -18,5 +17,9 @@ class Documents extends Model
 
     public function project() {
         return $this->belongsToMany(Project::class, 'projectdocuments');
+    }
+
+    public function client() {
+        return $this->hasMany(Client::class);
     }
 }

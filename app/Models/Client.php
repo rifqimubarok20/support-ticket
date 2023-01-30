@@ -9,7 +9,6 @@ class Client extends Model
 {
     use HasFactory;
 
-    protected $connection  = 'mysql2';
     public $table = "client";
 
     protected $fillable = [
@@ -21,5 +20,9 @@ class Client extends Model
 
     public function project() {
         return $this->hasMany(Project::class);
+    }
+
+    public function client() {
+        return $this->hasMany(Client::class);
     }
 }
