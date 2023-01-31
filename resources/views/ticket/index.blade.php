@@ -58,26 +58,29 @@
                         </tr>
                     </tfoot>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Aplikasi - PRC</td>
-                            <td>PT Maju Jaya</td>
-                            <td>Terdapat beberapa bagian yang kurang pas</td>
-                            <td class="text-center">-</td>
-                            <td class="text-center">
-                                <a href="/ticket/" class="btn btn-circle btn-sm btn-success" data-toggle="tooltip"
-                                    data-placement="bottom" title="Ajukan"><i class="fas fa-paper-plane"></i></a>
-                                <a href="/ticket/edit" class="btn btn-circle btn-sm btn-warning" data-toggle="tooltip"
-                                    data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
-                                <form action="/ticket/" method="POST" class="d-inline">
-                                    @method('delete')
-                                    @csrf
-                                    <button class="btn btn-circle btn-sm btn-danger" data-toggle="tooltip"
-                                        data-placement="top" title="Hapus"
-                                        onclick="return confirm('Yakin Mau Di Hapus?')"><i class="fa fa-trash"></i></button>
-                                </form>
-                            </td>
-                        </tr>
+                        @foreach ($ticket as $item)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $item->product->nama }}</td>
+                                <td>{{ $item->client->name }}</td>
+                                <td>{{ $item->issue }}</td>
+                                <td class="text-center"><a href="{{ asset('storage/'. $item->file) }}" target="_blank"><i class="fas fa-file-alt"></i></a></td>
+                                <td class="text-center">
+                                    <a href="/clients/" class="btn btn-circle btn-sm btn-success" data-toggle="tooltip"
+                                        data-placement="bottom" title="Ajukan"><i class="fas fa-paper-plane"></i></a>
+                                    <a href="/clients//edit" class="btn btn-circle btn-sm btn-warning" data-toggle="tooltip"
+                                        data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
+                                    <form action="/ticket/{{ $item->id }}" method="POST" class="d-inline">
+                                        @method('delete')
+                                        @csrf
+                                        <button class="btn btn-circle btn-sm btn-danger" data-toggle="tooltip"
+                                            data-placement="top" title="Hapus"
+                                            onclick="return confirm('Yakin Mau Di Hapus?')"><i
+                                                class="fa fa-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
                         {{-- @foreach ($client as $cli)
                             <tr>
                                 <td>{{ $cli->name }}</td>

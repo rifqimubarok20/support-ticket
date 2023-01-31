@@ -25,17 +25,18 @@
             <h6 class="m-0 font-weight-bold text-primary">Input Support Ticket</h6>
         </div>
         <div class="card-body">
-            <form>
+            <form action="/ticket" method="post" enctype="multipart/form-data">
+                @csrf
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="product">Product</label>
-                                <select class="custom-select mr-sm-2" id="product">
+                                <select class="custom-select mr-sm-2" id="product" name="product_id">
                                     <option selected>Choose...</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                    @foreach ($product as $prd)
+                                        <option value="{{ $prd->id }}">{{ $prd->nama }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -43,15 +44,21 @@
                             <div class="form-group col-md-12">
                                 <div class="form-group">
                                     <label for="client">Client</label>
-                                    <input type="text" id="client" class="form-control" placeholder="Nama Client"
-                                        disabled>
+                                    <select class="custom-select mr-sm-2" id="product" name="client_id">
+                                        <option selected>Choose...</option>
+                                        @foreach ($client as $cl)
+                                            <option value="{{ $cl->id }}">{{ $cl->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    {{-- <input type="text" id="client" class="form-control" placeholder="Nama Client"
+                                        disabled> --}}
                                 </div>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="exampleFormControlFile1">File input</label>
-                                <input type="file" class="form-control-file" id="exampleFormControlFile1">
+                                <input type="file" class="form-control-file" name="file" id="exampleFormControlFile1">
                             </div>
                         </div>
                     </div>
@@ -59,7 +66,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="issue">Issue</label>
-                                <textarea class="form-control" id="issue" rows="5"></textarea>
+                                <textarea class="form-control" id="issue" name="issue" rows="5"></textarea>
                             </div>
                         </div>
                         <div class="form-row justify-content-end">
