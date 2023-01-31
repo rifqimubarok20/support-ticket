@@ -6,6 +6,7 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Ticket</h1>
+        <h1 class="h3 mb-0 text-gray-800"><strong>Ticket /</strong> Tambah Ticket</h1>
     </div>
 
     @if (session()->has('success'))
@@ -70,7 +71,7 @@
                         </div>
                         <div class="form-row justify-content-end">
                             <a href="/ticket" class="btn btn-danger my-3 px-4 mr-2">Back</a>
-                            <button type="submit" class="btn btn-success my-3 px-4">Submit</button>
+                            <button type="submit" class="btn btn-primary my-3 px-4">Submit</button>
                         </div>
                     </div>
                 </div>
