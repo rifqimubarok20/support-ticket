@@ -65,11 +65,11 @@
                             <td>Terdapat beberapa bagian yang kurang pas</td>
                             <td class="text-center">-</td>
                             <td class="text-center">
-                                <a href="/clients/" class="btn btn-circle btn-sm btn-success" data-toggle="tooltip"
+                                <a href="/ticket/" class="btn btn-circle btn-sm btn-success" data-toggle="tooltip"
                                     data-placement="bottom" title="Ajukan"><i class="fas fa-paper-plane"></i></a>
-                                <a href="/clients//edit" class="btn btn-circle btn-sm btn-warning" data-toggle="tooltip"
+                                <a href="/ticket/edit" class="btn btn-circle btn-sm btn-warning" data-toggle="tooltip"
                                     data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
-                                <form action="/clients/" method="POST" class="d-inline">
+                                <form action="/ticket/" method="POST" class="d-inline">
                                     @method('delete')
                                     @csrf
                                     <button class="btn btn-circle btn-sm btn-danger" data-toggle="tooltip"
