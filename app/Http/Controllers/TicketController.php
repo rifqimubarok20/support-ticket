@@ -7,6 +7,7 @@ use App\Models\Ticket;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class TicketController extends Controller
 {
@@ -23,6 +24,13 @@ class TicketController extends Controller
         return view('ticket.tambah', [
             'client' => $client,
             'product' => $product
+        ]);
+    }
+
+    public function show(Ticket $ticket)
+    {
+        return view('ticket.detail', [
+            'ticket' => $ticket
         ]);
     }
 
@@ -48,33 +56,37 @@ class TicketController extends Controller
 
     public function edit(Ticket $ticket)
     {
+        $product = Product::all();
+        $client = Client::all();
+
         return view('ticket.edit', [
-            'ticket' => $ticket
+            'product' => $product,
+            'client' => $client,
+            'ticket' => $ticket,
         ]);
     }
 
     public function update(Request $request, Ticket $ticket)
     {
         $validatedData = $request->validate([
-            'client_id' => 'required',
-            'product_id' => 'required',
-            'issue' => 'required',
+            'client_id' => '',
+            'product_id' => '',
+            'issue' => '',
             'file' => 'image|file'
         ]);
 
         if($request->file('file')){
+            if($request->oldFile) {
+                Storage::delete($request->oldFile);
+            }
             $validatedData['file'] = $request->file('file')->store('documents');
         }
 
-        Client::create($validatedData);
+        Ticket::where('id', $ticket->id)
+            ->update($validatedData);
 
         return redirect()->route('ticket.index')
             ->with('success', 'Ticket Berhasil Diupdate!');
-    }
-
-    public function pengajuan()
-    {
-        return view('ticket.pengajuan');
     }
 
     public function destroy($id)
@@ -83,5 +95,12 @@ class TicketController extends Controller
         $ticket->delete();
         return redirect()->route('ticket.index')
             ->with('success', 'Ticket berhasil dihapus!');
+    }
+
+    public function download($id)
+    {
+        $data = DB::table('tickets')->where('id', $id)->first();
+        $filepath = storage_path("app/public/{$data->file}");
+        return \Response::download($filepath);
     }
 }
