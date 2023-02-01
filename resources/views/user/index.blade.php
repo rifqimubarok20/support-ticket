@@ -69,7 +69,7 @@
                                             src="{{ asset('temp') }}/img/undraw_profile.svg">
                                     </td>
                                 @endif
-                                <td>{{ $usr->name }}</td>
+                                <td>{{ ucfirst($usr->name) }}</td>
                                 <td>{{ $usr->email }}</td>
                                 <td>{{ ucfirst($usr->role) }}</td>
                                 <td class="text-center">
