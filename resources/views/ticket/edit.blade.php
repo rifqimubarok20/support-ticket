@@ -24,17 +24,20 @@
             <h6 class="m-0 font-weight-bold text-primary">Edit Support Ticket</h6>
         </div>
         <div class="card-body">
-            <form>
+            <form action="/ticket/{{ $ticket->id }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('put')
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="product">Product</label>
-                                <select class="custom-select mr-sm-2" id="product">
-                                    <option selected>Choose...</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                <select class="custom-select mr-sm-2" name="product_id" id="product">
+                                    <option value="{{ old('product_id', $ticket->product_id) }}" selected hidden>
+                                        {{ $ticket->product->nama }}</option>
+                                    @foreach ($product as $prd)
+                                        <option value="{{ $prd->id }}">{{ $prd->nama }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -42,15 +45,21 @@
                             <div class="form-group col-md-12">
                                 <div class="form-group">
                                     <label for="client">Client</label>
-                                    <input type="text" id="client" class="form-control" placeholder="Nama Client"
-                                        disabled>
+                                    <select class="custom-select mr-sm-2" name="client_id" id="client" disabled>
+                                        <option value="{{ Auth::user()->id }}" selected hidden>
+                                            {{ ucfirst(Auth::user()->name) }}</option>
+                                        {{-- @foreach ($client as $cli)
+                                            <option value="{{ $cli->id }}">{{ $cli->name }}</option>
+                                        @endforeach --}}
+                                    </select>
                                 </div>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-12">
-                                <label for="exampleFormControlFile1">File input</label>
-                                <input type="file" class="form-control-file" id="exampleFormControlFile1">
+                                <input type="hidden" name="oldFile" class="form-control-file" value="{{ $ticket->file }}">
+                                <label for="fileInput">File input</label>
+                                <input type="file" class="form-control-file" name="file" id="fileInput">
                             </div>
                         </div>
                     </div>
@@ -58,12 +67,12 @@
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="issue">Issue</label>
-                                <textarea class="form-control" id="issue" rows="5"></textarea>
+                                <textarea class="form-control" name="issue" id="issue" rows="5">{{ $ticket->issue }}</textarea>
                             </div>
                         </div>
                     </div>
                 </div>
-                <hr>
+                {{-- <hr>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-row">
@@ -100,7 +109,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <div class="form-row justify-content-end">
                     <a href="/ticket" class="btn btn-danger my-3 mr-2">Back</a>
                     <button type="submit" class="btn btn-primary my-3">Update</button>
