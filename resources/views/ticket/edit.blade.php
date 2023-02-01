@@ -32,7 +32,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="product">Product</label>
-                                <select class="custom-select mr-sm-2" name="product_id" id="product">
+                                <select class="custom-select mr-sm-2" name="product_id" id="product" disabled>
                                     <option value="{{ old('product_id', $ticket->product_id) }}" selected hidden>
                                         {{ $ticket->product->nama }}</option>
                                     @foreach ($product as $prd)
@@ -55,34 +55,32 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-12">
-                                <input type="hidden" name="oldFile" class="form-control-file" value="{{ $ticket->file }}">
-                                <label for="fileInput">File input</label>
-                                <input type="file" class="form-control-file" name="file" id="fileInput">
-                            </div>
-                        </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="issue">Issue</label>
-                                <textarea class="form-control" name="issue" id="issue" rows="5">{{ $ticket->issue }}</textarea>
+                                <textarea class="form-control" name="issue" id="issue" rows="5" disabled>{{ $ticket->issue }}</textarea>
                             </div>
                         </div>
                     </div>
                 </div>
-                {{-- <hr>
+                <hr>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="programmer">Assign Programmer</label>
-                                <select class="custom-select mr-sm-2" id="programmer">
-                                    <option selected>Choose...</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                <select class="custom-select mr-sm-2" name="user_id" id="programmer">
+                                    @if ($ticket->user_id)
+                                        <option value="{{ $ticket->user_id }}" selected hidden>{{ $ticket->user->name }}
+                                        </option>
+                                    @else
+                                        <option selected hidden>Pilih Programmer</option>
+                                    @endif
+                                    @foreach ($programmer as $pro)
+                                        <option value="{{ $pro->id }}">{{ $pro->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -94,22 +92,25 @@
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="status">Status</label>
-                                <select class="custom-select mr-sm-2" id="status">
-                                    <option selected>Choose...</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                <select class="custom-select mr-sm-2" name="status" id="status">
+                                    <option value="{{ $ticket->status }}" selected hidden>{{ ucfirst($ticket->status) }}
+                                    </option>
+                                    <option value="to do">To Do</option>
+                                    <option value="on progress">On Progress</option>
+                                    <option value="testing">Testing</option>
+                                    <option value="staging">Staging</option>
+                                    <option value="done">Done</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-12">
-                                <label for="status">Description</label>
-                                <textarea class="form-control" id="issue" rows="5"></textarea>
+                                <label for="desc">Description</label>
+                                <textarea class="form-control" name="description" id="desc" rows="5" placeholder="Masukkan Deskripsi..">{{ $ticket->description }}</textarea>
                             </div>
                         </div>
                     </div>
-                </div> --}}
+                </div>
                 <div class="form-row justify-content-end">
                     <a href="/ticket" class="btn btn-danger my-3 mr-2">Back</a>
                     <button type="submit" class="btn btn-primary my-3">Update</button>

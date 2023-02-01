@@ -45,7 +45,8 @@ class UserController extends Controller
             'email' => 'required|unique:users',
             'password' => 'required|min:5|max:255',
             'image' => 'image|file|mimes:jpg,png,jpeg,gif,svg',
-            'role' => ''
+            'role' => '',
+            'unit' => ''
         ]);
 
         $user = new User();
@@ -54,6 +55,7 @@ class UserController extends Controller
         $user->password = Hash::make($request->password);
         $user->image = $request->file('image')->store('images');
         $user->role = $request->role;
+        $user->unit = $request->unit;
         $user->save();
 
         return redirect('/user')->with('success','Data Baru Berhasil Ditambahkan!');
