@@ -49,22 +49,20 @@
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
-                        <tr class="text-center">
+                        <tr>
                             <th>Client</th>
                             <th>Products</th>
-                            @foreach ($documents as $item)
-                                <th>{{ $item->name }}</th>
-                            @endforeach
+                            <th>Mulai</th>
+                            <th>Berakhir</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tfoot>
-                        <tr class="text-center">
+                        <tr>
                             <th>Client</th>
                             <th>Products</th>
-                            @foreach ($documents as $item)
-                                <th>{{ $item->name }}</th>
-                            @endforeach
+                            <th>Mulai</th>
+                            <th>Berakhir</th>
                             <th>Action</th>
                         </tr>
                     </tfoot>
@@ -76,42 +74,8 @@
                             <tr>
                                 <td>{{ $item->client->name }}</td>
                                 <td>{{ $item->product->nama }}</td>
-                                @foreach ($documents as $doc)
-                                    @php
-                                        $ownDocument = $projectDocuments[$doc->id] ?? null;
-                                    @endphp
-                                    <td class="text-center">
-                                        @if (empty($ownDocument))
-                                            <p><i class="fas fa-file-excel text-secondary" style="font-size: 20px"></i></p>
-                                        @else
-                                            <a href="{{ asset('storage/' . $ownDocument) }}"
-                                                target="_blank"><i class="fas fa-file-download text-primary" style="font-size: 20px"></i></a>
-                                        @endif
-                                        <form action="{{ route('projects.upload') }}" method="POST"
-                                            enctype="multipart/form-data">
-                                            @csrf
-                                            <input type="hidden" name="project_id" value="{{ $item->id }}">
-                                            <input type="hidden" name="document_id" value="{{ $doc->id }}">
-                                            <div class="mt-3">
-                                                @can ('admin')
-                                                <div class="input-group">
-                                                    <div class="custom-file">
-                                                        <input type="file" class="custom-file-input"
-                                                            id="inputGroupFile04 file" name="file">
-                                                        <label class="custom-file-label" for="inputGroupFile04">Choose
-                                                            File</label>
-                                                    </div>
-                                                    <div class="input-group-append">
-                                                        <button class="btn btn-success" type="submit"
-                                                            id="inputGroupFileAddon04">
-                                                            <i class="fa-solid fa-upload"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                @endcan
-                                        </form>
-                                    </td>
-                                @endforeach
+                                <td>{{ $item->start_project }}</td>
+                                <td>{{ $item->finish_project }}</td>
                                 <td class="text-center" style="vertical-align: middle">
                                     <form action="/projects/{{ $item->id }}" method="POST" class="d-inline">
                                         @method('delete')
