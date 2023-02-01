@@ -87,13 +87,13 @@
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary text-center">Document Management</h6>
+                    <h6 class="m-0 font-weight-bold text-primary text-center">Support Ticket</h6>
                 </div>
                 <div class="card-body">
                     <div class="d-flex justify-content-center align-items-center rotate-n-15 mb-3">
                         {{-- <img class="img-profile rounded-circle justify-content-center" width="10%"
                             src="{{ asset('temp') }}/img/undraw_profile.svg"> --}}
-                        <i class="fa-brands fa-dochub fa-4x text-primary"></i>
+                        <i class="fas fa-headset fa-4x text-primary"></i>
                     </div>
                     <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste eveniet optio soluta impedit
                         dolorum. Corporis impedit perspiciatis, voluptatem natus vel doloremque sequi praesentium
