@@ -21,6 +21,7 @@ class ProjectController extends Controller
 
         return view('project.index', [
             'product' => Product::all(),
+            'documents' => Documents::all(),
             'client' => Client::all(),
             'project' => $project,
         ]);
