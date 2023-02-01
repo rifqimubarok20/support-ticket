@@ -20,8 +20,8 @@
     </li>
 
     <!-- Nav Item - Tables -->
-    <li class="nav-item {{ Request::is('documents') ? 'active' : '' }}">
-        <a class="nav-link" href="/documents">
+    <li class="nav-item {{ Request::is('products') ? 'active' : '' }}">
+        <a class="nav-link" href="/products">
             <i class="fas fa-fw fa-file"></i>
             <span>Product</span></a>
     </li>
