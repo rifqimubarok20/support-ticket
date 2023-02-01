@@ -4,9 +4,9 @@
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
         <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fa-brands fa-dochub"></i>
+            <i class="fas fa-headset"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">DocMan <sup>&copy;</sup></div>
+        <div class="sidebar-brand-text mx-3">Support Ticket</div>
     </a>
 
     <!-- Divider -->
