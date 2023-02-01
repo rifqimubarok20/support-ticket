@@ -77,6 +77,20 @@
                     {{ $message }}
                 </div>
             @enderror
+            <div class="from-group mb-3">
+                <label for="role" class="form-label">Unit</label>
+                <select name="unit" id="unit" class="form-control @error('unit') is-invalid @enderror" disabled>
+                    <option value="" selected hidden>Pilih Unit Client</option>
+                    <option value="admin">Admin</option>
+                    <option value="client">Client</option>
+                    <option value="programmer">Programmer</option>
+                </select>
+            </div>
+            @error('unit')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
             <br>
             <div class="from-group mb-5">
                 <button type="submit" class="btn bg-gradient-primary text-white">Simpan</button>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Client;
 use App\Models\Ticket;
 use App\Models\Product;
@@ -58,29 +59,30 @@ class TicketController extends Controller
     {
         $product = Product::all();
         $client = Client::all();
+        $programmer = User::where('role', 'programmer')->get();
 
         return view('ticket.edit', [
             'product' => $product,
             'client' => $client,
             'ticket' => $ticket,
+            'programmer' => $programmer,
         ]);
     }
 
     public function update(Request $request, Ticket $ticket)
     {
         $validatedData = $request->validate([
-            'client_id' => '',
-            'product_id' => '',
-            'issue' => '',
-            'file' => 'image|file'
+            'user_id' => '',
+            'status' => '',
+            'description' => '',
         ]);
 
-        if($request->file('file')){
-            if($request->oldFile) {
-                Storage::delete($request->oldFile);
-            }
-            $validatedData['file'] = $request->file('file')->store('documents');
-        }
+        // if($request->file('file')){
+        //     if($request->oldFile) {
+        //         Storage::delete($request->oldFile);
+        //     }
+        //     $validatedData['file'] = $request->file('file')->store('documents');
+        // }
 
         Ticket::where('id', $ticket->id)
             ->update($validatedData);

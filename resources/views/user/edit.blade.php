@@ -62,7 +62,7 @@
             <br>
             <div class="from-group">
                 <button type="submit" class="btn bg-gradient-primary text-white">Update</button>
-                <a href="/dashboard" class="btn bg-gradient-danger text-white">Kembali</a>
+                <a href="/user" class="btn bg-gradient-danger text-white">Kembali</a>
             </div>
         </form>
     </div>

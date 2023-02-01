@@ -39,6 +39,16 @@
 <!-- Page level custom scripts -->
 <script src="{{ asset('temp') }}/js/demo/datatables-demo.js"></script>
 
+<script>
+    document.getElementById('role').addEventListener('change', function() {
+        if (this.value === 'client') {
+            document.getElementById('unit').disabled = false;
+        } else {
+            document.getElementById('unit').disabled = true;
+        }
+    })
+</script>
+
 </body>
 
 </html>
