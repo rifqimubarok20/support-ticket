@@ -17,15 +17,12 @@ class ProjectController extends Controller
     {
         $project = Project::with('client', 'product', 'documents')->get();
         // dd ($project->toArray());
-        $filename = DB::table('projectdocuments')->where('file', 'value')->get();
+        // $filename = DB::table('projectdocuments')->where('file', 'value')->get();
 
         return view('project.index', [
-            'projectdocuments' => ProjectDocument::find(1),
-            'documents' => Documents::all(),
             'product' => Product::all(),
             'client' => Client::all(),
             'project' => $project,
-            'filename' => $filename,
         ]);
     }
 

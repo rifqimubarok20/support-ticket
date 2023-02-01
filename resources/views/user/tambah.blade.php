@@ -68,8 +68,8 @@
                 <select name="role" id="role" class="form-control @error('role') is-invalid @enderror">
                     <option value="" selected hidden>Pilih Role User</option>
                     <option value="admin">Admin</option>
-                    <option value="operator">Operator</option>
                     <option value="client">Client</option>
+                    <option value="programmer">Programmer</option>
                 </select>
             </div>
             @error('role')
