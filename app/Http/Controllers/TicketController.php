@@ -2,18 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Client;
 use App\Models\Ticket;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class TicketController extends Controller
 {
-    public function index() {
+
+    public function __construct()
+    {
+        Ticket::expired()->delete();
+    }
+
+    public function index()
+    {
         $ticket = Ticket::with('product', 'client', 'user')->get();
+        $labels = Ticket::whereDate('expired_at', '>', now()->subDays(2))->get();
         return view('ticket.index', compact('ticket'));
     }
 
@@ -49,6 +58,7 @@ class TicketController extends Controller
         $ticket->product_id = $product_id;
         $ticket->issue = $issue;
         $ticket->file = $path;
+        $ticket->expired_at = Carbon::now()->addDays(2);
         $ticket->save();
 
         return redirect()->route('ticket.index')
@@ -105,4 +115,5 @@ class TicketController extends Controller
         $filepath = storage_path("app/public/{$data->file}");
         return \Response::download($filepath);
     }
+
 }
