@@ -60,7 +60,12 @@
                     <tbody>
                         @foreach ($ticket as $item)
                             <tr>
-                                <td><label class="badge badge-warning" id="formLabel"></label>{{ $loop->iteration }}</td>
+                                <td>
+                                    @if($item->expired_at >= Carbon\Carbon::now())
+                                        <span class="badge badge-warnig">New</span>
+                                    @endif
+                                    {{ $loop->iteration }}
+                                </td>
                                 <td>{{ $item->product->nama }}</td>
                                 <td>{{ $item->client->name }}</td>
                                 <td>{{ $item->issue }}</td>
