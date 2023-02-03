@@ -25,16 +25,14 @@
             <h6 class="m-0 font-weight-bold text-primary">Data List Ticket</h6>
         </div>
         <div class="card-body">
-            @can('admin')
-                <div class="d-flex mb-3">
-                    <a href="/ticket/create" class="btn btn-success btn-icon-split">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-plus"></i>
-                        </span>
-                        <span class="text">Tambah Ticket</span>
-                    </a>
-                </div>
-            @endcan
+            <div class="d-flex mb-3">
+                <a href="/ticket/create" class="btn btn-success btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Tambah Ticket</span>
+                </a>
+            </div>
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
@@ -72,7 +70,7 @@
                                 <td>{{ $item->client->name }}</td>
                                 <td>{{ $item->issue }}</td>
                                 <td class="text-center">
-                                    <a href="{{ asset('storage/' . $item->file) }}" target="_blank">
+                                    <a class="text-secondary" href="{{ asset('storage/' . $item->file) }}" target="_blank">
                                         <i class="fas fa-file-alt"></i>
                                     </a>
                                 </td>
@@ -83,71 +81,21 @@
                                     <a href="/ticket/{{ $item->id }}" class="btn btn-circle btn-sm btn-primary"
                                         data-toggle="tooltip" data-placement="bottom" title="Detail"><i
                                             class="fas fa-eye"></i></a>
-                                    <a href="/ticket/{{ $item->id }}/edit" class="btn btn-circle btn-sm btn-warning"
-                                        data-toggle="tooltip" data-placement="top" title="Edit"><i
-                                            class="fa fa-edit"></i></a>
-                                    <button class="btn btn-circle btn-sm btn-danger" data-toggle="modal"
-                                        data-placement="top" title="Hapus" data-target="#staticBackdrop"><i
-                                            class="fa fa-trash"></i></button>
+                                    @if (Auth::user()->can('admin') || Auth::user()->can('programmer'))
+                                        <a href="/ticket/{{ $item->id }}/edit" class="btn btn-circle btn-sm btn-warning"
+                                            data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                                class="fa fa-edit"></i></a>
+                                    @endif
+                                    <form action="/ticket/{{ $item->id }}" method="POST" class="d-inline">
+                                        @method('delete')
+                                        @csrf
+                                        <button class="btn btn-circle btn-sm btn-danger"
+                                            onclick="return confirm('Yakin Mau Di Hapus?')"><i
+                                                class="fa fa-trash"></i></button>
+                                    </form>
                                 </td>
                             </tr>
-                            <!-- Modal -->
-                            <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false"
-                                tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="staticBackdropLabel">Hapus</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="row">
-                                                <div class="col-6 d-flex justify-content-center">
-                                                    <img src="{{ asset('temp/img/tanya.png') }}"
-                                                        style="width: 200px; heigth: 300px">
-                                                </div>
-                                                <div class="col-6 d-flex justify-content-center align-items-center">
-                                                    <h1 class="text-center"><strong>Yakin Mau Dihapus? 🤔</strong></h1>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <form action="/ticket/{{ $item->id }}" method="POST" class="d-inline">
-                                                @method('delete')
-                                                @csrf
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Yakin</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         @endforeach
-                        {{-- @foreach ($client as $cli)
-                            <tr>
-                                <td>{{ $cli->name }}</td>
-                                <td>{{ $cli->contact }}</td>
-                                <td>{{ $cli->address }}</td>
-                                @can('admin')
-                                    <td class="text-center">
-                                        <a href="/clients/{{ $cli->id }}" class="btn btn-circle btn-sm btn-primary"><i
-                                                class="fa fa-eye"></i></a>
-                                        <a href="/clients/{{ $cli->id }}/edit" class="btn btn-circle btn-sm btn-warning"><i
-                                                class="fa fa-edit"></i></a>
-                                        <form action="/clients/{{ $cli->id }}" method="POST" class="d-inline">
-                                            @method('delete')
-                                            @csrf
-                                            <button class="btn btn-circle btn-sm btn-danger"
-                                                onclick="return confirm('Yakin Mau Di Hapus?')"><i
-                                                    class="fa fa-trash"></i></button>
-                                        </form>
-                                    </td>
-                                @endcan
-                            </tr>
-                        @endforeach --}}
                     </tbody>
                 </table>
             </div>

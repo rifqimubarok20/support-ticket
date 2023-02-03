@@ -46,11 +46,13 @@
                                 <div class="form-group">
                                     <label for="client">Client</label>
                                     <select class="custom-select mr-sm-2" name="client_id" id="client" disabled>
-                                        <option value="{{ Auth::user()->id }}" selected hidden>
-                                            {{ ucfirst(Auth::user()->name) }}</option>
-                                        {{-- @foreach ($client as $cli)
-                                            <option value="{{ $cli->id }}">{{ $cli->name }}</option>
-                                        @endforeach --}}
+                                        <option value="">{{ $ticket->client->name }}</option>
+                                        {{-- @if (Auth::user()->client_id)
+                                            <option value="{{ Auth::user()->id }}" selected hidden>
+                                                {{ ucfirst(Auth::user()->client->name) }}</option>
+                                        @else
+                                            <option value="">-</option>
+                                        @endif --}}
                                     </select>
                                 </div>
                             </div>
@@ -66,51 +68,55 @@
                     </div>
                 </div>
                 <hr>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-row">
-                            <div class="form-group col-md-12">
-                                <label for="programmer">Assign Programmer</label>
-                                <select class="custom-select mr-sm-2" name="user_id" id="programmer">
-                                    @if ($ticket->user_id)
-                                        <option value="{{ $ticket->user_id }}" selected hidden>{{ $ticket->user->name }}
-                                        </option>
-                                    @else
-                                        <option selected hidden>Pilih Programmer</option>
-                                    @endif
-                                    @foreach ($programmer as $pro)
-                                        <option value="{{ $pro->id }}">{{ $pro->name }}</option>
-                                    @endforeach
-                                </select>
+                @can('admin')
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="programmer">Assign Programmer</label>
+                                    <select class="custom-select mr-sm-2" name="user_id" id="programmer">
+                                        @if ($ticket->user_id)
+                                            <option value="{{ $ticket->user_id }}" selected hidden>{{ $ticket->user->name }}
+                                            </option>
+                                        @else
+                                            <option selected hidden>Pilih Programmer</option>
+                                        @endif
+                                        @foreach ($programmer as $pro)
+                                            <option value="{{ $pro->id }}">{{ $pro->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endcan
                 <hr>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-row">
-                            <div class="form-group col-md-12">
-                                <label for="status">Status</label>
-                                <select class="custom-select mr-sm-2" name="status" id="status">
-                                    <option value="{{ $ticket->status }}" selected hidden>{{ ucfirst($ticket->status) }}
-                                    </option>
-                                    <option value="to do">To Do</option>
-                                    <option value="on progress">On Progress</option>
-                                    <option value="testing">Testing</option>
-                                    <option value="staging">Staging</option>
-                                    <option value="done">Done</option>
-                                </select>
+                @can('programmer')
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="status">Status</label>
+                                    <select class="custom-select mr-sm-2" name="status" id="status">
+                                        <option value="{{ $ticket->status }}" selected hidden>{{ ucfirst($ticket->status) }}
+                                        </option>
+                                        <option value="to do">To Do</option>
+                                        <option value="on progress">On Progress</option>
+                                        <option value="testing">Testing</option>
+                                        <option value="staging">Staging</option>
+                                        <option value="done">Done</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-12">
-                                <label for="desc">Description</label>
-                                <textarea class="form-control" name="description" id="desc" rows="5" placeholder="Masukkan Deskripsi..">{{ $ticket->description }}</textarea>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="desc">Description</label>
+                                    <textarea class="form-control" name="description" id="desc" rows="5" placeholder="Masukkan Deskripsi..">{{ $ticket->description }}</textarea>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endcan
                 <div class="form-row justify-content-end">
                     <a href="/ticket" class="btn btn-danger my-3 mr-2">Back</a>
                     <button type="submit" class="btn btn-primary my-3">Update</button>
