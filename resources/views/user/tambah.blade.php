@@ -79,11 +79,11 @@
             @enderror
             <div class="from-group mb-3">
                 <label for="role" class="form-label">Unit</label>
-                <select name="unit" id="unit" class="form-control @error('unit') is-invalid @enderror" disabled>
+                <select name="client_id" id="unit" class="form-control @error('unit') is-invalid @enderror" disabled>
                     <option value="" selected hidden>Pilih Unit Client</option>
-                    <option value="admin">Admin</option>
-                    <option value="client">Client</option>
-                    <option value="programmer">Programmer</option>
+                    @foreach ($client as $cl)
+                        <option value="{{ $cl->id }}">{{ $cl->name }}</option>
+                    @endforeach
                 </select>
             </div>
             @error('unit')

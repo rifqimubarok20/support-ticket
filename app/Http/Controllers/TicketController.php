@@ -13,7 +13,14 @@ use Illuminate\Support\Facades\DB;
 class TicketController extends Controller
 {
     public function index() {
-        $ticket = Ticket::with('product', 'client', 'user')->get();
+        $user = auth()->user();
+        
+        if ($user->role === "admin") {
+            $ticket = Ticket::all();
+        } else {
+            $ticket = Ticket::where('client_id', $user->client_id)->with('client', 'product', 'user')->get();
+        }
+
         return view('ticket.index', compact('ticket'));
     }
 
@@ -37,22 +44,22 @@ class TicketController extends Controller
 
     public function store(Request $request)
     {
-        $client_id = $request->input('client_id');
         $product_id = $request->input('product_id');
+        $client_id = $request->input('client_id');
         $issue = $request->input('issue');
         $file = $request->file('file');
 
         $path = Storage::putFile('documents', $file);
 
         $ticket = new Ticket;
-        $ticket->client_id = $client_id;
         $ticket->product_id = $product_id;
+        $ticket->client_id = $client_id;
         $ticket->issue = $issue;
         $ticket->file = $path;
         $ticket->save();
 
         return redirect()->route('ticket.index')
-            ->with('success', 'Ticket Berhasil Diupload!');
+            ->with('success', 'Ticket Berhasil Dibuat!');
     }
 
     public function edit(Ticket $ticket)
@@ -77,18 +84,11 @@ class TicketController extends Controller
             'description' => '',
         ]);
 
-        // if($request->file('file')){
-        //     if($request->oldFile) {
-        //         Storage::delete($request->oldFile);
-        //     }
-        //     $validatedData['file'] = $request->file('file')->store('documents');
-        // }
-
         Ticket::where('id', $ticket->id)
             ->update($validatedData);
 
         return redirect()->route('ticket.index')
-            ->with('success', 'Ticket Berhasil Diupdate!');
+            ->with('success', 'Ticket Berhasil Di Update!');
     }
 
     public function destroy($id)
@@ -96,7 +96,7 @@ class TicketController extends Controller
         $ticket = Ticket::findOrFail($id);
         $ticket->delete();
         return redirect()->route('ticket.index')
-            ->with('success', 'Ticket berhasil dihapus!');
+            ->with('success', 'Ticket berhasil di Hapus!');
     }
 
     public function download($id)

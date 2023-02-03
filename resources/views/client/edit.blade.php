@@ -23,9 +23,9 @@
             @method('put')
             <div class="from-group mb-3">
                 <label for="nama" class="form-label">Nama Perusahaan</label>
-                <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama"
-                    value="{{ old('nama', $client->nama) }}" placeholder="Masukkan Nama Perusahaan..." required autofocus>
-                @error('nama')
+                <input type="text" class="form-control @error('name') is-invalid @enderror" id="nama" name="name"
+                    value="{{ old('name', $client->name) }}" placeholder="Masukkan Nama Perusahaan..." required autofocus>
+                @error('name')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
@@ -34,9 +34,9 @@
             <div class="from-group mb-3">
                 <label for="kontak" class="form-label">Kontak Perusahaan</label>
                 <input type="text" class="form-control @error('kontak') is-invalid @enderror" id="kontak"
-                    kontak="kontak" value="{{ old('kontak', $client->kontak) }}" placeholder="Masukkan kontak Perusahaan..."
-                    required>
-                @error('kontak')
+                    kontak="contact" value="{{ old('contact', $client->contact) }}"
+                    placeholder="Masukkan kontak Perusahaan..." required>
+                @error('contact')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
@@ -60,9 +60,9 @@
             @enderror
             <div class="from-group mb-3">
                 <label for="alamat" class="form-label">Alamat Perusahaan</label>
-                <textarea name="alamat" class="form-control @error('alamat') is-invalid @enderror" id="alamat" cols="30"
-                    rows="5" placeholder="Masukkan Alamat Perusahaan..." required>{{ old('kontak', $client->alamat) }}</textarea>
-                @error('semester')
+                <textarea name="address" class="form-control @error('address') is-invalid @enderror" id="alamat" cols="30"
+                    rows="5" placeholder="Masukkan Alamat Perusahaan..." required>{{ old('kontak', $client->address) }}</textarea>
+                @error('address')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>

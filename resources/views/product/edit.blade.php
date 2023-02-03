@@ -36,9 +36,9 @@
                 <select class="custom-select @error('kategori') is-invalid @enderror" name="kategori" id="kategori"
                     aria-label="Default select example">
                     <option value="{{ old('kategori', $product->id_kategori) }}" selected hidden>
-                        {{ $product->kategori->nama }}</option>
+                        {{ $product->kategori->name }}</option>
                     @foreach ($kategori as $item)
-                        <option value={{ $item->id }}>{{ $item->nama }}</option>
+                        <option value={{ $item->id }}>{{ $item->name }}</option>
                     @endforeach
                 </select>
                 @error('kategori')
