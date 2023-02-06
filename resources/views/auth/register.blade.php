@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Login - Support Ticket</title>
+    <title>Register - Support Ticket</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('temp') }}/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -45,15 +45,20 @@
                                         <div class="rotate-n-15">
                                             <h1><i class="fas fa-headset"></i></h1>
                                         </div>
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back to <br> Support Ticket!</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Welcome to <br> Support Ticket!</h1>
                                     </div>
                                     @if(session('error'))
                                     <div class="alert alert-danger">
                                         <b>Opps!</b> {{session('error')}}
                                     </div>
                                     @endif
-                                    <form action="{{ route('login.post') }}" method="post" class="user">
+                                    <form action="{{ route('register.post') }}" method="POST" class="user">
                                         @csrf
+                                        <div class="form-group">
+                                            <input type="text" name="name" class="form-control form-control-user"
+                                                id="name"
+                                                placeholder="Enter Username" required>
+                                        </div>
                                         <div class="form-group">
                                             <input type="email" name="email" class="form-control form-control-user"
                                                 id="email exampleInputEmail" aria-describedby="emailHelp"
@@ -67,24 +72,15 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <div class="custom-control custom-checkbox small">
-                                                <input type="checkbox" class="custom-control-input" id="customCheck">
-                                                <label class="custom-control-label" for="customCheck">Remember
-                                                    Me</label>
+                                        {{-- <div class="form-group">
+                                            <div class="input-group" id="show_hide_password">
+                                                <input type="password" name='password' class="form-control form-control-user" placeholder="Confirm Password" required >
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <button type="submit" class="btn btn-primary btn-user btn-block">
-                                            Login
+                                            Create Account
                                         </button>
                                     </form>
-                                    <hr>
-                                    <div class="text-center">
-                                        <a class="small" href="forgot-password.html">Forgot Password?</a>
-                                    </div>
-                                    <div class="text-center">
-                                        <a class="small" href="/registration">Create an Account!</a>
-                                    </div>
                                 </div>
                             </div>
                         </div>
