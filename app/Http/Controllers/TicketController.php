@@ -7,9 +7,11 @@ use App\Models\User;
 use App\Models\Client;
 use App\Models\Ticket;
 use App\Models\Product;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
 
 class TicketController extends Controller
 {
@@ -24,22 +26,25 @@ class TicketController extends Controller
         
         if ($user->role === "admin") {
             $ticket = Ticket::all();
+        } else if ($user->role === "programmer") {
+            $ticket = Ticket::where('user_id', $user->id)->get();
         } else {
             $ticket = Ticket::where('client_id', $user->client_id)->with('client', 'product', 'user')->get();
         }
-        $labels = Ticket::whereDate('expired_at', '>', now()->subDays(2))->get();
+        $labels = Ticket::whereDate('expired_at', '>', now())->get();
         
         return view('ticket.index', compact('ticket'));
     }
 
     public function create()
     {
+        $user = auth()->user();
+        $project = Project::where('client_id', $user->client_id)->with('client', 'product', 'documents')->get();
         $client = Client::all();
-        $product = Product::all();
 
         return view('ticket.tambah', [
-            'client' => $client,
-            'product' => $product
+            'project' => $project,
+            'client' => $client
         ]);
     }
 

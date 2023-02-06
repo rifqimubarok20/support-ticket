@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'admin' => \App\Http\Middleware\IsAdmin::class,
         'is_verify_email' => \App\Http\Middleware\IsVerifyEmail::class,
         'programmer' => \App\Http\Middleware\IsProgrammer::class,
+        'client' => \App\Http\Middleware\IsClient::class,
     ];
 }

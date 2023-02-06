@@ -25,14 +25,16 @@
             <h6 class="m-0 font-weight-bold text-primary">Data List Ticket</h6>
         </div>
         <div class="card-body">
-            <div class="d-flex mb-3">
-                <a href="/ticket/create" class="btn btn-success btn-icon-split">
-                    <span class="icon text-white-50">
-                        <i class="fas fa-plus"></i>
-                    </span>
-                    <span class="text">Tambah Ticket</span>
-                </a>
-            </div>
+            @if (Auth::user()->role == 'client')
+                <div class="d-flex mb-3">
+                    <a href="/ticket/create" class="btn btn-success btn-icon-split">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-plus"></i>
+                        </span>
+                        <span class="text">Tambah Ticket</span>
+                    </a>
+                </div>
+            @endif
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
@@ -61,8 +63,8 @@
                         @foreach ($ticket as $item)
                             <tr>
                                 <td>
-                                    @if($item->expired_at >= Carbon\Carbon::now())
-                                        <span class="badge badge-warnig">New</span>
+                                    @if ($item->expired_at >= Carbon\Carbon::now())
+                                        <span class="badge badge-warning">New</span>
                                     @endif
                                     {{ $loop->iteration }}
                                 </td>
@@ -70,9 +72,14 @@
                                 <td>{{ $item->client->name }}</td>
                                 <td>{{ $item->issue }}</td>
                                 <td class="text-center">
-                                    <a class="text-secondary" href="{{ asset('storage/' . $item->file) }}" target="_blank">
-                                        <i class="fas fa-file-alt"></i>
-                                    </a>
+                                    @if ($item->file)
+                                        <a class="text-primary" href="{{ asset('storage/' . $item->file) }}"
+                                            target="_blank">
+                                            <i class="fas fa-file-alt"></i>
+                                        </a>
+                                    @else
+                                        <p>-</p>
+                                    @endif
                                 </td>
                                 <td class="text-center"><span
                                         class="badge p-2 {{ $item->status == 'to do' ? 'badge-secondary' : ($item->status == 'on progress' ? 'badge-warning' : ($item->status == 'testing' ? 'badge-info' : ($item->status == 'staging' ? 'badge-primary' : ($item->status == 'done' ? 'badge-success' : '')))) }}">{{ ucfirst($item->status) }}</span>

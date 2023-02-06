@@ -41,12 +41,10 @@ Route::resource('/editprofile', ProfileController::class)->middleware('auth');
 
 Route::resource('/clients', ClientController::class)->middleware('auth');
 
-Route::resource('/documents', DocumentsController::class);
-
 Route::resource('/products', ProductController::class)->middleware('auth');
 
 Route::resource('/projects', ProjectController::class)->middleware('auth');
 Route::post('/projects/upload', [ProjectController::class, 'upload'])->name('projects.upload')->middleware('auth');
 
-Route::resource('/ticket', TicketController::class);
-Route::get('/ticket/download/{id}', [TicketController::class, 'download']);
+Route::resource('/ticket', TicketController::class)->middleware('auth');
+Route::get('/ticket/download/{id}', [TicketController::class, 'download'])->middleware('auth');

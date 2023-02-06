@@ -32,16 +32,32 @@
                 @enderror
             </div>
             <div class="from-group mb-3">
-                <label for="kategori" class="form-label">Nama Kategori</label><br>
-                <select class="custom-select @error('kategori') is-invalid @enderror" name="kategori" id="kategori"
+                <label for="id_kategori" class="form-label">Nama Kategori</label><br>
+                <select class="custom-select @error('id_kategori') is-invalid @enderror" name="id_kategori" id="id_kategori"
                     aria-label="Default select example">
-                    <option value="{{ old('kategori', $product->id_kategori) }}" selected hidden>
+                    <option value="{{ old('id_kategori', $product->id_kategori) }}" selected hidden>
                         {{ $product->kategori->name }}</option>
                     @foreach ($kategori as $item)
                         <option value={{ $item->id }}>{{ $item->name }}</option>
                     @endforeach
                 </select>
-                @error('kategori')
+                @error('id_kategori')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
+            <div class="from-group mb-3">
+                <label for="client_id" class="form-label">Client</label><br>
+                <select class="custom-select @error('client_id') is-invalid @enderror" name="client_id" id="client_id"
+                    aria-label="Default select example">
+                    <option value="{{ old('client_id', $product->client_id) }}" selected hidden>
+                        {{ $product->client->name }}</option>
+                    @foreach ($client as $cli)
+                        <option value={{ $cli->id }}>{{ $cli->name }}</option>
+                    @endforeach
+                </select>
+                @error('id_kategori')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
@@ -50,7 +66,7 @@
             <br>
             <div class="from-group">
                 <button type="submit" class="btn bg-gradient-primary text-white">Update</button>
-                <a href="/documents" class="btn bg-gradient-danger text-white">Kembali</a>
+                <a href="/products" class="btn bg-gradient-danger text-white">Kembali</a>
             </div>
         </form>
     </div>
