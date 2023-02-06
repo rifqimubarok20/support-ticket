@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class ProjectDocument extends Model
 {
     use HasFactory;
-
     public $table = "projectdocuments";
 
     protected $fillable = [

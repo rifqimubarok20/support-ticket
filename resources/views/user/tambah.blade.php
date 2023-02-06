@@ -68,11 +68,25 @@
                 <select name="role" id="role" class="form-control @error('role') is-invalid @enderror">
                     <option value="" selected hidden>Pilih Role User</option>
                     <option value="admin">Admin</option>
-                    <option value="operator">Operator</option>
                     <option value="client">Client</option>
+                    <option value="programmer">Programmer</option>
                 </select>
             </div>
             @error('role')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
+            <div class="from-group mb-3">
+                <label for="role" class="form-label">Unit</label>
+                <select name="client_id" id="unit" class="form-control @error('unit') is-invalid @enderror" disabled>
+                    <option value="" selected hidden>Pilih Unit Client</option>
+                    @foreach ($client as $cl)
+                        <option value="{{ $cl->id }}">{{ $cl->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            @error('unit')
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>

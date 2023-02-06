@@ -38,11 +38,11 @@
                         <div class="row">
                             <div class="col-sm-8">
                                 <span class="mb-2"><strong>Nama Perusahaan</strong> : </span>
-                                <p class="mb-3" style="font-size: 20px;margin-left: 50%">{{ $client->nama }}</p>
+                                <p class="mb-3" style="font-size: 20px;margin-left: 50%">{{ $client->name }}</p>
                                 <span class="mb-2"><strong>Kontak Perusahaan</strong> : </span>
-                                <p class="mb-3" style="font-size: 20px;margin-left: 50%">{{ $client->kontak }}</p>
+                                <p class="mb-3" style="font-size: 20px;margin-left: 50%">{{ $client->contact }}</p>
                                 <span class="mb-2"><strong>Alamat Perusahaan</strong> : </span>
-                                <p class="mb-3" style="font-size: 20px;margin-left: 50%">{{ $client->alamat }}</p>
+                                <p class="mb-3" style="font-size: 20px;margin-left: 50%">{{ $client->address }}</p>
                             </div>
                         </div>
                     </div>

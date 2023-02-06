@@ -33,14 +33,29 @@
             @enderror
             <div class="from-group mb-3">
                 <label for="nama" class="form-label">Nama Kategori</label><br>
-                <select class="custom-select @error('kategori') is-invalid @enderror" name="kategori" id="kategori" aria-label="Default select example">
-                    <option selected disabled>- Pilih -</option>
+                <select class="custom-select @error('id_kategori') is-invalid @enderror" name="id_kategori" id="id_kategori"
+                    aria-label="Default select example">
+                    <option selected hidden>- Pilih Kategori -</option>
                     @foreach ($kategori as $item)
                         <option value={{ $item->id }}>{{ $item->name }}</option>
                     @endforeach
-                  </select>
+                </select>
             </div>
-            @error('kategori')
+            @error('id_kategori')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
+            <div class="from-group mb-3">
+                <label for="client_id" class="form-label">Client</label><br>
+                <select class="custom-select @error('client_id') is-invalid @enderror" name="client_id" id="client_id">
+                    <option selected hidden>- Pilih Client -</option>
+                    @foreach ($client as $cli)
+                        <option value={{ $cli->id }}>{{ $cli->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            @error('client_id')
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>

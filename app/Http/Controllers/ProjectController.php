@@ -15,17 +15,20 @@ class ProjectController extends Controller
 {
     public function index()
     {
-        $project = Project::with('client', 'product', 'documents')->get();
-        // dd ($project->toArray());
-        $filename = DB::table('projectdocuments')->where('file', 'value')->get();
+        $user = auth()->user();
+        // $project = Project::where('client_id', $user->id)->with('client', 'product', 'documents')->get();
+        
+        if ($user->role === "admin") {
+            $project = Project::all();
+        } else {
+            $project = Project::where('client_id', $user->client_id)->with('client', 'product', 'documents')->get();
+        }
 
         return view('project.index', [
-            'projectdocuments' => ProjectDocument::find(1),
-            'documents' => Documents::all(),
-            'product' => Product::all(),
             'client' => Client::all(),
-            'project' => $project,
-            'filename' => $filename,
+            'product' => Product::all(),
+            'documents' => Documents::all(),
+            'project' => $project
         ]);
     }
 

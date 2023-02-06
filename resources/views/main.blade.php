@@ -39,12 +39,25 @@
 <!-- Page level custom scripts -->
 <script src="{{ asset('temp') }}/js/demo/datatables-demo.js"></script>
 
-<!-- Page level plugins -->
-<script src="{{ asset('temp') }}/vendor/chart.js/Chart.min.js"></script>
+<script>
+    document.getElementById('role').addEventListener('change', function() {
+        if (this.value === 'client') {
+            document.getElementById('unit').disabled = false;
+        } else {
+            document.getElementById('unit').disabled = true;
+        }
+    })
+</script>
 
-<!-- Page level custom scripts -->
-<script src="{{ asset('temp') }}/js/demo/chart-area-demo.js"></script>
-<script src="{{ asset('temp') }}/js/demo/chart-pie-demo.js"></script>
+<script>
+    function onFormSubmit() {
+        document.getElementById('formLabel').innerHTML = "New";
+
+        setTimeout(function() {
+            document.getElementById('formLabel').innerHTML = "";
+        }, 1440000);
+    }
+</script>
 
 </body>
 

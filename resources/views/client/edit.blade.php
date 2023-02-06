@@ -23,9 +23,9 @@
             @method('put')
             <div class="from-group mb-3">
                 <label for="nama" class="form-label">Nama Perusahaan</label>
-                <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama"
-                    value="{{ old('nama', $client->nama) }}" placeholder="Masukkan Nama Perusahaan..." required autofocus>
-                @error('nama')
+                <input type="text" class="form-control @error('name') is-invalid @enderror" id="nama" name="name"
+                    value="{{ old('name', $client->name) }}" placeholder="Masukkan Nama Perusahaan..." required autofocus>
+                @error('name')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
@@ -34,9 +34,9 @@
             <div class="from-group mb-3">
                 <label for="kontak" class="form-label">Kontak Perusahaan</label>
                 <input type="text" class="form-control @error('kontak') is-invalid @enderror" id="kontak"
-                    kontak="kontak" value="{{ old('kontak', $client->kontak) }}" placeholder="Masukkan kontak Perusahaan..."
-                    required>
-                @error('kontak')
+                    kontak="contact" value="{{ old('contact', $client->contact) }}"
+                    placeholder="Masukkan kontak Perusahaan..." required>
+                @error('contact')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
@@ -46,9 +46,11 @@
                 <label for="image" class="form-label">Logo Perusahaan</label>
                 <input type="hidden" name="oldImage" value="{{ $client->image }}">
                 @if ($client->image)
-                    <img class="img-fluid d-block my-3" src="{{ asset('storage/' . $client->image) }}">
+                    <img class="img-fluid d-block my-3" style="width: 80px; height: 80px"
+                        src="{{ asset('storage/' . $client->image) }}">
                 @else
-                    <img class="img-fluid" src="">
+                    <img class="img-fluid d-block my-3" src="{{ asset('temp') }}/img/undraw_profile.svg"
+                        style="width: 80px; height: 80px">
                 @endif
                 <input type="file" class="form-control-file @error('image') is-invalid @enderror" id="image"
                     name="image" placeholder="Masukkan Logo Perusahaan...">
@@ -60,9 +62,9 @@
             @enderror
             <div class="from-group mb-3">
                 <label for="alamat" class="form-label">Alamat Perusahaan</label>
-                <textarea name="alamat" class="form-control @error('alamat') is-invalid @enderror" id="alamat" cols="30"
-                    rows="5" placeholder="Masukkan Alamat Perusahaan..." required>{{ old('kontak', $client->alamat) }}</textarea>
-                @error('semester')
+                <textarea name="address" class="form-control @error('address') is-invalid @enderror" id="alamat" cols="30"
+                    rows="5" placeholder="Masukkan Alamat Perusahaan..." required>{{ old('kontak', $client->address) }}</textarea>
+                @error('address')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
