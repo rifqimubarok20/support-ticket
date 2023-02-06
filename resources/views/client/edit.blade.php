@@ -46,9 +46,11 @@
                 <label for="image" class="form-label">Logo Perusahaan</label>
                 <input type="hidden" name="oldImage" value="{{ $client->image }}">
                 @if ($client->image)
-                    <img class="img-fluid d-block my-3" src="{{ asset('storage/' . $client->image) }}">
+                    <img class="img-fluid d-block my-3" style="width: 80px; height: 80px"
+                        src="{{ asset('storage/' . $client->image) }}">
                 @else
-                    <img class="img-fluid" src="">
+                    <img class="img-fluid d-block my-3" src="{{ asset('temp') }}/img/undraw_profile.svg"
+                        style="width: 80px; height: 80px">
                 @endif
                 <input type="file" class="form-control-file @error('image') is-invalid @enderror" id="image"
                     name="image" placeholder="Masukkan Logo Perusahaan...">

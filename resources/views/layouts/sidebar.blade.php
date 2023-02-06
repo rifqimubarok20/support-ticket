@@ -19,27 +19,31 @@
             <span>Dashboard</span></a>
     </li>
 
-    <!-- Nav Item - Tables -->
-    <li class="nav-item {{ Request::is('products') ? 'active' : '' }}">
-        <a class="nav-link" href="/products">
-            <i class="fas fa-fw fa-file"></i>
-            <span>Product</span></a>
-    </li>
 
-    <!-- Nav Item - Tables -->
-    <li class="nav-item {{ Request::is('projects') ? 'active' : '' }}">
-        <a class="nav-link" href="/projects">
-            <i class="fa-solid fa-chart-pie"></i>
-            <span>Project</span></a>
-    </li>
+    @if (Auth::user()->role == 'admin' || Auth::user()->role == 'client')
+        <!-- Nav Item - Tables -->
+        <li class="nav-item {{ Request::is('products') ? 'active' : '' }}">
+            <a class="nav-link" href="/products">
+                <i class="fas fa-fw fa-file"></i>
+                <span>Product</span></a>
+        </li>
 
-    <!-- Nav Item - Tables -->
-    <li class="nav-item {{ Request::is('clients') ? 'active' : '' }}">
-        <a class="nav-link" href="/clients">
-            <i class="fa-brands fa-dropbox"></i>
-            <span>Client</span></a>
-    </li>
+        <!-- Nav Item - Tables -->
+        <li class="nav-item {{ Request::is('projects') ? 'active' : '' }}">
+            <a class="nav-link" href="/projects">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Project</span></a>
+        </li>
+    @endif
 
+    @if (Auth::user()->role == 'admin' || Auth::user()->role == 'programmer')
+        <!-- Nav Item - Tables -->
+        <li class="nav-item {{ Request::is('clients') ? 'active' : '' }}">
+            <a class="nav-link" href="/clients">
+                <i class="fa-brands fa-dropbox"></i>
+                <span>Client</span></a>
+        </li>
+    @endif
 
     <!-- Nav Item - Tables -->
     <li class="nav-item {{ Request::is('ticket') ? 'active' : '' }}">

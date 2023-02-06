@@ -47,8 +47,10 @@
                             <p><b>File Dokumen</b></p>
                         </div>
                         <div class="col-lg-9">
-                            <a href="/ticket/download/{{ $ticket->id }}" class="btn btn-primary"><i
+                            <a href="/ticket/download/{{ $ticket->id }}" class="btn btn-primary btn-sm"><i
                                     class="fas fa-download"></i> Download</a>
+                            <a href="{{ asset('storage/' . $ticket->file) }}" class="btn btn-info btn-sm" target="_blank"><i
+                                    class="fas fa-eye"></i> View</a>
                         </div>
                     </div>
                     <div class="row mb-3">

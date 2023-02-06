@@ -3,6 +3,9 @@
 @section('title', 'Tambah Ticket')
 
 @section('content')
+    @php
+        use Carbon\Carbon;
+    @endphp
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800"><strong>Ticket /</strong> Tambah Ticket</h1>
@@ -33,8 +36,18 @@
                                 <label for="product">Product</label>
                                 <select class="custom-select mr-sm-2" id="product" name="product_id" required>
                                     <option value="" selected hidden>Pilih Product</option>
-                                    @foreach ($product as $prd)
-                                        <option value="{{ $prd->id }}">{{ $prd->nama }}</option>
+                                    @foreach ($project as $prd)
+                                        @if (Carbon::now()->gt($prd->finish_project))
+                                            <option value="{{ $prd->product->id }}" style="color: #a2a2a5" disabled>
+                                                {{ $prd->product->nama }} -
+                                                (Support Sudah tidak Berlaku sejak
+                                                {{ $prd->finish_project }})
+                                            </option>
+                                        @else
+                                            <option value="{{ $prd->product->id }}" class="py-3">
+                                                {{ $prd->product->nama }} - (Support
+                                                Berlaku Sampai {{ $prd->finish_project }})</option>
+                                        @endif
                                     @endforeach
                                 </select>
                             </div>
