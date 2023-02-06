@@ -54,7 +54,7 @@ class ProductController extends Controller
         $product->id_kategori = $request->kategori;
         $product->save();
         return redirect()->route('products.index')
-            ->with('success', 'Produk berhasil dibuat!');
+            ->with('success', 'Produk berhasil di Update!');
     }
 
     public function destroy($id)
@@ -62,6 +62,6 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $product->delete();
         return redirect()->route('products.index')
-            ->with('success', 'Dokumen berhasil dihapus!');
+            ->with('success', 'Dokumen berhasil di Hapus!');
     }
 }

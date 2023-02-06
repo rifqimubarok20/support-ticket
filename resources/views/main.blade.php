@@ -49,6 +49,16 @@
     })
 </script>
 
+<script>
+    function onFormSubmit() {
+        document.getElementById('formLabel').innerHTML = "New";
+
+        setTimeout(function() {
+            document.getElementById('formLabel').innerHTML = "";
+        }, 1440000);
+    }
+</script>
+
 </body>
 
 </html>

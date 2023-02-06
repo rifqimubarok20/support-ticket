@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Client;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -29,7 +30,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('user.tambah');
+        $client = Client::all();
+        return view('user.tambah', compact('client'));
     }
 
     /**
@@ -46,7 +48,7 @@ class UserController extends Controller
             'password' => 'required|min:5|max:255',
             'image' => 'image|file|mimes:jpg,png,jpeg,gif,svg',
             'role' => '',
-            'unit' => ''
+            'client_id' => ''
         ]);
 
         $user = new User();
@@ -55,7 +57,7 @@ class UserController extends Controller
         $user->password = Hash::make($request->password);
         $user->image = $request->file('image')->store('images');
         $user->role = $request->role;
-        $user->unit = $request->unit;
+        $user->client_id = $request->client_id;
         $user->save();
 
         return redirect('/user')->with('success','Data Baru Berhasil Ditambahkan!');
