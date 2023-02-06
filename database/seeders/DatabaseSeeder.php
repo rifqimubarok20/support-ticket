@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
             ClientSeeder::class,
             KategoriSeeder::class,
             DokumenSeeder::class,
+            ProductSeeder::class,
+            ProjectSeeder::class,
         ]);
     }
 }
