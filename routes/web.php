@@ -9,9 +9,11 @@ use App\Http\Controllers\TicketController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentsController;
 use App\Http\Controllers\PengajuanController;
+use App\Http\Controllers\Auth\RegistrationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,11 +26,15 @@ use App\Http\Controllers\PengajuanController;
 |
 */
 
-Route::get('/', [LoginController::class, 'login'])->name('login');
-Route::post('actionlogin', [LoginController::class, 'actionlogin'])->name('actionlogin');
-Route::get('actionlogout', [LoginController::class, 'actionlogout'])->name('actionlogout')->middleware('auth');
+Route::get('/', [AuthController::class, 'index'])->name('login');
+Route::post('post-login', [AuthController::class, 'postLogin'])->name('login.post');
+Route::get('registration', [AuthController::class, 'registration'])->name('register');
+Route::post('post-registration', [AuthController::class, 'postRegistration'])->name('register.post');
+Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
+/* New Added Routes */
+Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['auth']);
+Route::get('account/verify/{token}', [AuthController::class, 'verifyAccount'])->name('user.verify');
 
 Route::resource('/user', UserController::class)->middleware('admin');
 Route::resource('/editprofile', ProfileController::class)->middleware('auth');

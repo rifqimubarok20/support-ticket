@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('role');
             $table->foreignId('client_id');
+            $table->enum('role', ['admin', 'client', 'programmer'])->default('client');
             $table->rememberToken();
             $table->timestamps();
         });
