@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('image')->nullable();
             $table->foreignId('client_id')->nullable();
+            $table->softDeletes();
             $table->enum('role', ['admin', 'client', 'programmer'])->default('client');
             $table->rememberToken();
             $table->timestamps();
