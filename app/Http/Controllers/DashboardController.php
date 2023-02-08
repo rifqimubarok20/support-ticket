@@ -28,7 +28,7 @@ class DashboardController extends Controller
             $project = Project::all();
         } else if ($user->role === 'client') {
             if (!$user->client_id) {
-                return view('pilihUnit', compact('client'));
+                return view('auth.pilihUnit', compact('client'));
             }
             $ticket = Ticket::where('client_id', $user->client_id)->with('client', 'product', 'user')->get();
             $product = Product::where('client_id', $user->client_id)->with('client')->get();
