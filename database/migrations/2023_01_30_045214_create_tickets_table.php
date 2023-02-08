@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('client_id');
             $table->longText('issue');
             $table->string('file');
+            $table->timestamp('expired_at')->nullable()->useCurrentOnUpdate();
             $table->foreignId('user_id')->nullable();
             $table->enum('status', ['to do', 'on progress', 'testing', 'staging', 'done'])->default('to do');
             $table->longText('description')->nullable();
