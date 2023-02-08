@@ -72,7 +72,7 @@
                                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                                 @endforeach
                                             </select>
-                                            <br><br><br><br>
+                                            <br><br>
                                         </div>
                                         <button type="submit" class="btn btn-primary btn-user btn-block">
                                             Lanjut ke Dashboard
