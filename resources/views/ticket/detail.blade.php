@@ -100,7 +100,7 @@
                                 <p><b>Description</b></p>
                             </div>
                             <div class="col-lg-7">
-                                <p>{{ $ticket->description == '' ? '-' : $ticket->description }}</p>
+                                <p>{{ $ticket->ticketStatus->description == '' ? '-' : $ticket->ticketStatus->description }}</p>
                             </div>
                         </div>
                     </div>
