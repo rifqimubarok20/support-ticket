@@ -27,10 +27,10 @@
             <h6 class="m-0 font-weight-bold text-primary">Input Support Ticket</h6>
         </div>
         <div class="card-body">
-            <form action="/ticket" method="post" enctype="multipart/form-data" onsubmit="onFormSubmit()">
+            <form action="/ticket" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-9">
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="product">Product</label>
@@ -61,15 +61,13 @@
                                 <input type="file" class="form-control-file" name="file" id="file" required>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="issue">Issue</label>
-                                <textarea class="form-control" id="issue" name="issue" rows="5" placeholder="Masukkan Issue..." required></textarea>
+                                <textarea class="form-control" id="summernote" name="issue" rows="5" placeholder="Masukkan Issue..." required></textarea>
                             </div>
                         </div>
-                        <div class="form-row justify-content-end">
+                        <div class="form-row justify-content-start">
                             <a href="/ticket" class="btn btn-danger my-3 px-4 mr-2">Back</a>
                             <button type="submit" class="btn btn-primary my-3 px-4">Submit</button>
                         </div>

@@ -8,6 +8,7 @@ use App\Models\Client;
 use App\Models\Ticket;
 use App\Models\Product;
 use App\Models\Project;
+use App\Models\TicketStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -29,7 +30,7 @@ class TicketController extends Controller
         } else if ($user->role === "programmer") {
             $ticket = Ticket::where('user_id', $user->id)->get();
         } else {
-            $ticket = Ticket::where('client_id', $user->client_id)->with('client', 'product', 'user')->get();
+            $ticket = Ticket::where('client_id', $user->client_id)->with('client', 'product', 'user', 'ticketStatus')->get();
         }
         $labels = Ticket::whereDate('expired_at', '>', now())->get();
         
@@ -62,13 +63,18 @@ class TicketController extends Controller
         $issue = $request->input('issue');
         $file = $request->file('file');
 
+        $status = TicketStatus::firstOrCreate(['status' => 'to do']);
+
+        $clean_html = strip_tags($issue);
+        
         $path = Storage::putFile('documents', $file);
 
         $ticket = new Ticket;
         $ticket->product_id = $product_id;
         $ticket->client_id = $client_id;
-        $ticket->issue = $issue;
+        $ticket->issue = $clean_html;
         $ticket->file = $path;
+        $ticket->status_id = $status->id;
         $ticket->expired_at = Carbon::now()->addDays(2);
         $ticket->save();
 
@@ -81,25 +87,47 @@ class TicketController extends Controller
         $product = Product::all();
         $client = Client::all();
         $programmer = User::where('role', 'programmer')->get();
+        $status = TicketStatus::where('ticket_id', $ticket->id)->get();
 
         return view('ticket.edit', [
             'product' => $product,
             'client' => $client,
             'ticket' => $ticket,
             'programmer' => $programmer,
+            'status' => $status
         ]);
     }
 
     public function update(Request $request, Ticket $ticket)
     {
-        $validatedData = $request->validate([
-            'user_id' => '',
-            'status' => '',
-            'description' => '',
-        ]);
+        $status = TicketStatus::firstOrCreate(['status' => 'on progress', 'ticket_id' => $ticket->id]);
+        $status->ticket_id = $ticket->id;
 
-        Ticket::where('id', $ticket->id)
-            ->update($validatedData);
+        
+        $user = auth()->user();
+        if ($user->role === "admin") {
+            $ticket->user_id = $request->user_id;
+            $ticket->status_id = $status->id;
+        } else {
+            $ticket->user_id = $user->id;
+            $ticket->status_id = $request->status_id;
+        }
+
+        $ticket->save();
+
+        // $ticket->user_id = $request->user_id;
+        // if ($ticket->status == 'to do') {
+        //     $ticket->status = 'on progress';
+        // }
+        // $ticket->save();
+        // $validatedData = $request->validate([
+        //     'user_id' => '',
+        //     'status' => '',
+        //     'description' => '',
+        // ]);
+
+        // Ticket::where('id', $ticket->id)
+        //     ->update($validatedData);
 
         return redirect()->route('ticket.index')
             ->with('success', 'Ticket Berhasil Di Update!');
@@ -118,6 +146,34 @@ class TicketController extends Controller
         $data = DB::table('tickets')->where('id', $id)->first();
         $filepath = storage_path("app/public/{$data->file}");
         return \Response::download($filepath);
+    }
+
+    public function editStatus($id)
+    {
+        $ticket = Ticket::findOrFail($id);
+        $product = Product::all();
+        $client = Client::all();
+        $status = TicketStatus::where('ticket_id', $ticket->id)->get();
+
+        return view('ticket.status', [
+            'product' => $product,
+            'client' => $client,
+            'ticket' => $ticket,
+            'status' => $status,
+        ]);
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        // $ticket = Ticket::findOrFail($id);
+        $status = new TicketStatus;
+        $status->status = $request->status;
+        $status->description = strip_tags($request->description);
+        $status->ticket_id = $request->ticket_id;
+        $status->save();
+
+        return redirect()->route('ticket.index')
+            ->with('success', 'Status Berhasil Di Ubah!');
     }
 
 }

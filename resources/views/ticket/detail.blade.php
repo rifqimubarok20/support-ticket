@@ -39,7 +39,7 @@
                             <p><b>Issue</b></p>
                         </div>
                         <div class="col-lg-9">
-                            {{ $ticket->issue }}
+                            {!! $ticket->issue !!}
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -59,8 +59,8 @@
                         </div>
                         <div class="col-lg-9">
                             <span style="font-size: 14px"
-                                class="badge p-2 {{ $ticket->status == 'to do' ? 'badge-secondary' : ($ticket->status == 'on progress' ? 'badge-warning' : ($ticket->status == 'testing' ? 'badge-info' : ($ticket->status == 'staging' ? 'badge-primary' : ($ticket->status == 'done' ? 'badge-success' : '')))) }}">
-                                {{ ucfirst($ticket->status) }}
+                                class="badge p-2 {{ $ticket->ticketStatus->status == 'to do' ? 'badge-secondary' : ($ticket->ticketStatus->status == 'on progress' ? 'badge-warning' : ($ticket->ticketStatus->status == 'testing' ? 'badge-info' : ($ticket->ticketStatus->status == 'staging' ? 'badge-primary' : ($ticket->ticketStatus->status == 'done' ? 'badge-success' : '')))) }}">
+                                {{ ucfirst($ticket->ticketStatus->status) }}
                             </span>
                         </div>
                     </div>
@@ -74,7 +74,7 @@
                     <div class="card-body">
                         <div class="row mb-3">
                             <div class="col-lg-5">
-                                <p><b>Nama</b></p>
+                                <p><b>Name</b></p>
                             </div>
                             <div class="col-lg-7">
                                 @if ($ticket->user_id)
@@ -90,8 +90,8 @@
                             </div>
                             <div class="col-lg-7">
                                 <span style="font-size: 14px"
-                                    class="badge p-2 {{ $ticket->status == 'to do' ? 'badge-secondary' : ($ticket->status == 'on progress' ? 'badge-warning' : ($ticket->status == 'testing' ? 'badge-info' : ($ticket->status == 'staging' ? 'badge-primary' : ($ticket->status == 'done' ? 'badge-success' : '')))) }}">
-                                    {{ ucfirst($ticket->status) }}
+                                    class="badge p-2 {{ $ticket->ticketStatus->status == 'to do' ? 'badge-secondary' : ($ticket->ticketStatus->status == 'on progress' ? 'badge-warning' : ($ticket->ticketStatus->status == 'testing' ? 'badge-info' : ($ticket->ticketStatus->status == 'staging' ? 'badge-primary' : ($ticket->ticketStatus->status == 'done' ? 'badge-success' : '')))) }}">
+                                    {{ ucfirst($ticket->ticketStatus->status) }}
                                 </span>
                             </div>
                         </div>
@@ -100,7 +100,7 @@
                                 <p><b>Description</b></p>
                             </div>
                             <div class="col-lg-7">
-                                <p>{{ $ticket->description }}</p>
+                                <p>{{ $ticket->description == '' ? '-' : $ticket->description }}</p>
                             </div>
                         </div>
                     </div>

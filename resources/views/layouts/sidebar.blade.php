@@ -24,7 +24,7 @@
         <!-- Nav Item - Tables -->
         <li class="nav-item {{ Request::is('products') ? 'active' : '' }}">
             <a class="nav-link" href="/products">
-                <i class="fas fa-fw fa-file"></i>
+                <i class="fa-brands fa-dropbox"></i>
                 <span>Product</span></a>
         </li>
 
@@ -36,11 +36,11 @@
         </li>
     @endif
 
-    @if (Auth::user()->role == 'admin' || Auth::user()->role == 'programmer')
+    @if (Auth::user()->role == 'admin')
         <!-- Nav Item - Tables -->
         <li class="nav-item {{ Request::is('clients') ? 'active' : '' }}">
             <a class="nav-link" href="/clients">
-                <i class="fa-brands fa-dropbox"></i>
+                <i class="fas fa-fw fa-users"></i>
                 <span>Client</span></a>
         </li>
     @endif
@@ -55,7 +55,7 @@
     @can('admin')
         <li class="nav-item {{ Request::is('user') ? 'active' : '' }}">
             <a class="nav-link" href="/user">
-                <i class="fas fa-fw fa-users"></i>
+                <i class="fas fa-fw fa-user-circle"></i>
                 <span>Users</span></a>
         </li>
     @endcan

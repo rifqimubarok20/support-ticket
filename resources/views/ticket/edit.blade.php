@@ -62,7 +62,22 @@
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="issue">Issue</label>
-                                <textarea class="form-control" name="issue" id="issue" rows="5" disabled>{{ $ticket->issue }}</textarea>
+                                <textarea class="form-control" name="issue" id="issue" rows="5" disabled>{!! $ticket->issue !!}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="row mb-3">
+                            <div class="col-lg-2">
+                                <p><b>File Dokumen</b></p>
+                            </div>
+                            <div class="col-lg-10">
+                                <a href="/ticket/download/{{ $ticket->id }}" class="btn btn-primary btn-sm"><i
+                                        class="fas fa-download"></i> Download</a>
+                                <a href="{{ asset('storage/' . $ticket->file) }}" class="btn btn-info btn-sm"
+                                    target="_blank"><i class="fas fa-eye"></i> View</a>
                             </div>
                         </div>
                     </div>
@@ -90,28 +105,32 @@
                         </div>
                     </div>
                 @endcan
+                <input type="hidden" value="{{ $ticket->status_id }}" name="status_id">
                 <hr>
                 @can('programmer')
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-9">
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label for="status">Status</label>
-                                    <select class="custom-select mr-sm-2" name="status" id="status">
-                                        <option value="{{ $ticket->status }}" selected hidden>{{ ucfirst($ticket->status) }}
+                                    <select class="custom-select mr-sm-2" name="status_id" id="status">
+                                        <option value="{{ $ticket->status_id }}" selected hidden>
+                                            {{ ucfirst($ticket->ticketStatus->status) }}
                                         </option>
-                                        <option value="to do">To Do</option>
-                                        <option value="on progress">On Progress</option>
+                                        @foreach ($status as $st)
+                                            <option value="{{ $st->id }}">{{ ucfirst($st->status) }}</option>
+                                        @endforeach
+                                        {{-- <option value="on progress">On Progress</option>
                                         <option value="testing">Testing</option>
                                         <option value="staging">Staging</option>
-                                        <option value="done">Done</option>
+                                        <option value="done">Done</option> --}}
                                     </select>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label for="desc">Description</label>
-                                    <textarea class="form-control" name="description" id="desc" rows="5" placeholder="Masukkan Deskripsi..">{{ $ticket->description }}</textarea>
+                                    <textarea class="form-control" name="description" id="summernote" rows="5" placeholder="Masukkan Deskripsi..">{{ $ticket->description }}</textarea>
                                 </div>
                             </div>
                         </div>

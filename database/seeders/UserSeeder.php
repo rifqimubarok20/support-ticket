@@ -22,5 +22,12 @@ class UserSeeder extends Seeder
             'password' => bcrypt('admin123'),
             'role' => 'admin',
         ]);
+
+        DB::table('users')->insert([
+            'name' => 'Haikal',
+            'email' => 'haikal@gmail.com',
+            'password' => bcrypt('123456'),
+            'role' => 'programmer',
+        ]);
     }
 }

@@ -18,6 +18,10 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+
+        UpdateTicketStatus::class => [
+            UpdateTicketStatusListener::class,
+        ],
     ];
 
     /**
@@ -27,7 +31,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        parent::boot();
     }
 
     /**
