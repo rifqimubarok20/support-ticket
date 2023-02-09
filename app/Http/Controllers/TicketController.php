@@ -100,7 +100,7 @@ class TicketController extends Controller
 
     public function update(Request $request, Ticket $ticket)
     {
-        $status = TicketStatus::firstOrCreate(['status' => 'on progress', 'ticket_id' => $ticket->id]);
+        $status = TicketStatus::firstOrCreate(['status' => 'on progress', 'description' => 'Sedang dalam perbaikan','ticket_id' => $ticket->id]);
         $status->ticket_id = $ticket->id;
 
         

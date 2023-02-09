@@ -23,7 +23,6 @@ return new class extends Migration
             $table->timestamp('expired_at')->nullable()->useCurrentOnUpdate();
             $table->foreignId('user_id')->nullable();
             $table->foreignId('status_id')->nullable();
-            $table->timestamp('expired_at')->nullable()->default(\DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
             $table->timestamps();
         });
     }

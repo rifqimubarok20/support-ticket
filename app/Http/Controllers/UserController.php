@@ -45,6 +45,7 @@ class UserController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|max:255',
             'email' => 'required|unique:users',
+            'email_verified_at' => 'required',
             'password' => 'required|min:5|max:255',
             'image' => 'image|file|mimes:jpg,png,jpeg,gif,svg',
             'role' => '',
@@ -54,6 +55,7 @@ class UserController extends Controller
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->email_verified_at = $request->email_verified_at;
         $user->password = Hash::make($request->password);
         $user->image = $request->file('image')->store('images');
         $user->role = $request->role;

@@ -3,6 +3,10 @@
 @section('title', 'Tambah User')
 
 @section('content')
+    @php
+        use Carbon\Carbon;
+    @endphp
+
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800"><strong>User /</strong> Tambah User</h1>
@@ -41,6 +45,9 @@
                     {{ $message }}
                 </div>
             @enderror
+
+            <input type="hidden" name="email_verified_at" value={{ Carbon::now() }}>
+
             <div class="from-group mb-3">
                 <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control @error('password') is-invalid @enderror" id="password"
