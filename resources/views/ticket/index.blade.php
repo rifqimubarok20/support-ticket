@@ -44,7 +44,7 @@
                             <th>Client</th>
                             <th>Issue</th>
                             <th class="text-center">File</th>
-                            <th>Status</th>
+                            <th class="text-center">Status</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -55,7 +55,7 @@
                             <th>Client</th>
                             <th>Issue</th>
                             <th class="text-center">File</th>
-                            <th>Status</th>
+                            <th class="text-center">Status</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </tfoot>
@@ -70,7 +70,7 @@
                                 </td>
                                 <td>{{ $item->product->nama }}</td>
                                 <td>{{ $item->client->name }}</td>
-                                <td>{{ $item->issue }}</td>
+                                <td>{{-- {{ $item->issue }} --}}{!! $item->issue !!}</td>
                                 <td class="text-center">
                                     @if ($item->file)
                                         <a class="text-primary" href="{{ asset('storage/' . $item->file) }}"
@@ -81,25 +81,33 @@
                                         <p>-</p>
                                     @endif
                                 </td>
-                                <td class="text-center"><span
-                                        class="badge p-2 {{ $item->status == 'to do' ? 'badge-secondary' : ($item->status == 'on progress' ? 'badge-warning' : ($item->status == 'testing' ? 'badge-info' : ($item->status == 'staging' ? 'badge-primary' : ($item->status == 'done' ? 'badge-success' : '')))) }}">{{ ucfirst($item->status) }}</span>
+                                <td class="text-center">
+                                    <span
+                                        class="badge p-2 {{ $item->ticketStatus->status == 'to do' ? 'badge-secondary' : ($item->ticketStatus->status == 'on progress' ? 'badge-warning' : ($item->ticketStatus->status == 'testing' ? 'badge-info' : ($item->ticketStatus->status == 'staging' ? 'badge-primary' : ($item->ticketStatus->status == 'done' ? 'badge-success' : '')))) }}">{{ ucfirst($item->ticketStatus->status) }}</span>
                                 </td>
                                 <td class="text-center px-0">
                                     <a href="/ticket/{{ $item->id }}" class="btn btn-circle btn-sm btn-primary"
                                         data-toggle="tooltip" data-placement="bottom" title="Detail"><i
                                             class="fas fa-eye"></i></a>
-                                    @if (Auth::user()->can('admin') || Auth::user()->can('programmer'))
+                                    @if (Auth::user()->can('programmer'))
+                                        <a href="/ticket/status/{{ $item->id }}"
+                                            class="btn btn-circle btn-sm btn-success" data-toggle="tooltip"
+                                            data-placement="top" title="Status"><i class="fas fa-plus"></i></a>
+                                    @endif
+                                    @if (Auth::user()->can('admin'))
                                         <a href="/ticket/{{ $item->id }}/edit" class="btn btn-circle btn-sm btn-warning"
                                             data-toggle="tooltip" data-placement="top" title="Edit"><i
                                                 class="fa fa-edit"></i></a>
                                     @endif
-                                    <form action="/ticket/{{ $item->id }}" method="POST" class="d-inline">
-                                        @method('delete')
-                                        @csrf
-                                        <button class="btn btn-circle btn-sm btn-danger"
-                                            onclick="return confirm('Yakin Mau Di Hapus?')"><i
-                                                class="fa fa-trash"></i></button>
-                                    </form>
+                                    @can('admin')
+                                        <form action="/ticket/{{ $item->id }}" method="POST" class="d-inline">
+                                            @method('delete')
+                                            @csrf
+                                            <button class="btn btn-circle btn-sm btn-danger"
+                                                onclick="return confirm('Yakin Mau Di Hapus?')"><i
+                                                    class="fa fa-trash"></i></button>
+                                        </form>
+                                    @endcan
                                 </td>
                             </tr>
                         @endforeach

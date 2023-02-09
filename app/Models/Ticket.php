@@ -12,6 +12,16 @@ class Ticket extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'product_id',
+        'client_id',
+        'issue',
+        'file',
+        'user_id',
+        'status_id',
+        'expired_at'
+    ];
+
     protected $dates = ['expired_at'];
 
     public function scopeExpired($query)
@@ -29,5 +39,10 @@ class Ticket extends Model
 
     public function user() {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function ticketStatus()
+    {
+        return $this->belongsTo(TicketStatus::class, 'status_id', 'id');
     }
 }

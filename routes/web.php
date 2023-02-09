@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\StatusController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -55,3 +56,7 @@ Route::post('/projects/upload', [ProjectController::class, 'upload'])->name('pro
 
 Route::resource('/ticket', TicketController::class)->middleware('auth');
 Route::get('/ticket/download/{id}', [TicketController::class, 'download'])->middleware('auth');
+Route::get('/ticket/status/{id}', [TicketController::class, 'editStatus'])->middleware('auth');
+Route::post('/ticket/status/{id}', [TicketController::class, 'updateStatus'])->middleware('auth');
+
+// Route::resource('/ticket/status', StatusController::class)->middleware('auth');
