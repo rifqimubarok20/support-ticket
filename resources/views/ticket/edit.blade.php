@@ -32,28 +32,24 @@
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="product">Product</label>
-                                <select class="custom-select mr-sm-2" name="product_id" id="product" disabled>
+                                <input type="text" class="form-control" value="{{ $ticket->product->nama }}" disabled>
+                                {{-- <select class="custom-select mr-sm-2" name="product_id" id="product" disabled>
                                     <option value="{{ old('product_id', $ticket->product_id) }}" selected hidden>
                                         {{ $ticket->product->nama }}</option>
                                     @foreach ($product as $prd)
                                         <option value="{{ $prd->id }}">{{ $prd->nama }}</option>
                                     @endforeach
-                                </select>
+                                </select> --}}
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <div class="form-group">
                                     <label for="client">Client</label>
-                                    <select class="custom-select mr-sm-2" name="client_id" id="client" disabled>
+                                    <input type="text" class="form-control" value="{{ $ticket->client->name }}" disabled>
+                                    {{-- <select class="custom-select mr-sm-2" name="client_id" id="client" disabled>
                                         <option value="">{{ $ticket->client->name }}</option>
-                                        {{-- @if (Auth::user()->client_id)
-                                            <option value="{{ Auth::user()->id }}" selected hidden>
-                                                {{ ucfirst(Auth::user()->client->name) }}</option>
-                                        @else
-                                            <option value="">-</option>
-                                        @endif --}}
-                                    </select>
+                                    </select> --}}
                                 </div>
                             </div>
                         </div>
@@ -62,7 +58,8 @@
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="issue">Issue</label>
-                                <textarea class="form-control" name="issue" id="issue" rows="5" disabled>{!! $ticket->issue !!}</textarea>
+                                <div>{!! $ticket->issue !!}</div>
+                                {{-- <textarea class="form-control" name="issue" id="issue" rows="5" disabled>{!! $ticket->issue !!}</textarea> --}}
                             </div>
                         </div>
                     </div>

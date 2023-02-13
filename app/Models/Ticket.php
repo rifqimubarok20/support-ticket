@@ -43,6 +43,6 @@ class Ticket extends Model
 
     public function ticketStatus()
     {
-        return $this->belongsTo(TicketStatus::class, 'status_id', 'id');
+        return $this->hasmany(TicketStatus::class, 'ticket_id');
     }
 }

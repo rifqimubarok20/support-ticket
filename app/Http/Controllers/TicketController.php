@@ -26,15 +26,17 @@ class TicketController extends Controller
         $user = auth()->user();
         
         if ($user->role === "admin") {
-            $ticket = Ticket::all();
+            $tickets = Ticket::with('ticketStatus')->get();
         } else if ($user->role === "programmer") {
-            $ticket = Ticket::where('user_id', $user->id)->get();
+            $tickets = Ticket::where('user_id', $user->id)->with('ticketStatus')->get();
         } else {
-            $ticket = Ticket::where('client_id', $user->client_id)->with('client', 'product', 'user', 'ticketStatus')->get();
+            $tickets = Ticket::where('client_id', $user->client_id)->with('client', 'product', 'user', 'ticketStatus')->get();
         }
         $labels = Ticket::whereDate('expired_at', '>', now())->get();
         
-        return view('ticket.index', compact('ticket'));
+        return view('ticket.index', [
+            'ticket' => $tickets
+        ]);
     }
 
     public function create()
@@ -51,8 +53,12 @@ class TicketController extends Controller
 
     public function show(Ticket $ticket)
     {
+        $status = TicketStatus::where('ticket_id', $ticket->id)->orderBy('created_at', 'desc')->get();
+        $getstatus = Ticket::with('ticketStatus')->get();
         return view('ticket.detail', [
-            'ticket' => $ticket
+            'ticket' => $ticket,
+            'status' => $status,
+            'getstatus' => $getstatus
         ]);
     }
 
@@ -64,19 +70,23 @@ class TicketController extends Controller
         $file = $request->file('file');
 
         $status = TicketStatus::firstOrCreate(['status' => 'to do']);
-
-        $clean_html = strip_tags($issue);
         
         $path = Storage::putFile('documents', $file);
 
         $ticket = new Ticket;
         $ticket->product_id = $product_id;
         $ticket->client_id = $client_id;
-        $ticket->issue = $clean_html;
+        $ticket->issue = $issue;
         $ticket->file = $path;
         $ticket->status_id = $status->id;
         $ticket->expired_at = Carbon::now()->addDays(2);
         $ticket->save();
+        
+        $status = new TicketStatus;
+        $status->status = 'to do';
+        $status->ticket_id = $ticket->id;
+        // $status->description = $request->description;
+        $status->save();
 
         return redirect()->route('ticket.index')
             ->with('success', 'Ticket Berhasil Dibuat!');
@@ -100,7 +110,7 @@ class TicketController extends Controller
 
     public function update(Request $request, Ticket $ticket)
     {
-        $status = TicketStatus::firstOrCreate(['status' => 'on progress', 'description' => 'Sedang dalam perbaikan','ticket_id' => $ticket->id]);
+        $status = TicketStatus::firstOrCreate(['status' => 'on progress', 'description' => 'Aplikasi sedang dalam pengecekan dan diperbaiki pada bagian error','ticket_id' => $ticket->id]);
         $status->ticket_id = $ticket->id;
 
         
@@ -153,7 +163,7 @@ class TicketController extends Controller
         $ticket = Ticket::findOrFail($id);
         $product = Product::all();
         $client = Client::all();
-        $status = TicketStatus::where('ticket_id', $ticket->id)->get();
+        $status = TicketStatus::where('ticket_id', $ticket->id)->latest()->first();
 
         return view('ticket.status', [
             'product' => $product,
@@ -168,7 +178,7 @@ class TicketController extends Controller
         // $ticket = Ticket::findOrFail($id);
         $status = new TicketStatus;
         $status->status = $request->status;
-        $status->description = strip_tags($request->description);
+        $status->description = $request->description;
         $status->ticket_id = $request->ticket_id;
         $status->save();
 
