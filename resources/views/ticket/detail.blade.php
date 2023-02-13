@@ -75,8 +75,8 @@
                     <div class="row mb-3">
                         @foreach ($status as $sts)
                             <div class="col-lg-3"></div>
-                            <div class="col-lg-9 d-flex justify-content-between pt-3 pl-0">
-                                <ul>
+                            <div class="col-lg-9 pt-3 pl-0">
+                                <ul style="padding-left: 1.875rem">
                                     <li>
                                         <b
                                             class="{{ $sts->status == 'to do' ? 'text-secondary' : ($sts->status == 'on progress' ? 'text-warning' : ($sts->status == 'testing' ? 'text-info' : ($sts->status == 'staging' ? 'text-primary' : ($sts->status == 'done' ? 'text-success' : '')))) }}">
@@ -88,9 +88,9 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-lg-4"></div>
-                            <div class="col-lg-8 mb-3 pl-0">
-                                {!! $sts->description !!}
+                            <div class="col-lg-3"></div>
+                            <div class="col-lg-9 mb-3" style="padding-left: 1.875rem">
+                                {!! $sts->description == '' ? '-' : $sts->description !!}
                             </div>
                         @endforeach
                     </div>
