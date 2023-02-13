@@ -75,20 +75,29 @@
                     <div class="row mb-3">
                         @foreach ($status as $sts)
                             <div class="col-lg-3"></div>
-                            <div class="col-lg-9 d-flex justify-content-between">
-                                <p>{{ ucfirst($sts->status) }}</p>
-                                <p>{{ Carbon::parse($sts->created_at)->diffForHumans() }}</p>
-                                {{-- <span style="font-size: 14px"
-                                class="badge p-2 {{ $ticket->ticketStatus->status == 'to do' ? 'badge-secondary' : ($ticket->ticketStatus->status == 'on progress' ? 'badge-warning' : ($ticket->ticketStatus->status == 'testing' ? 'badge-info' : ($ticket->ticketStatus->status == 'staging' ? 'badge-primary' : ($ticket->ticketStatus->status == 'done' ? 'badge-success' : '')))) }}">
-                                {{ ucfirst($ticket->ticketStatus->status) }}
-                            </span> --}}
+                            <div class="col-lg-9 d-flex justify-content-between pt-3 pl-0">
+                                <ul>
+                                    <li>
+                                        <b
+                                            class="{{ $sts->status == 'to do' ? 'text-secondary' : ($sts->status == 'on progress' ? 'text-warning' : ($sts->status == 'testing' ? 'text-info' : ($sts->status == 'staging' ? 'text-primary' : ($sts->status == 'done' ? 'text-success' : '')))) }}">
+                                            {{ ucfirst($sts->status) }}
+                                        </b>
+                                        <p style="font-size: 0.813rem">
+                                            <em>{{ Carbon::parse($sts->created_at)->diffForHumans() }}</em>
+                                        </p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-4"></div>
+                            <div class="col-lg-8 mb-3 pl-0">
+                                {!! $sts->description !!}
                             </div>
                         @endforeach
                     </div>
                 </div>
             </div>
             @can('admin')
-                <div class="card shadow col-lg-4 mb-4">
+                <div class="card shadow col-lg-4 mb-4" style="height: 50vh">
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">Data Programmer</h6>
                     </div>
@@ -126,11 +135,9 @@
                             </div>
                             <div class="col-lg-7">
                                 @if ($ticket->ticketStatus)
-                                    <p>
-                                        {!! ucfirst(
-                                            $ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->description,
-                                        ) !!}
-                                    </p>
+                                    {!! ucfirst(
+                                        $ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->description,
+                                    ) !!}
                                 @else
                                     <p>-</p>
                                 @endif
