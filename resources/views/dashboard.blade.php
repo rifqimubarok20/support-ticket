@@ -163,13 +163,16 @@
                             src="{{ asset('temp') }}/img/undraw_profile.svg"> --}}
                         <i class="fas fa-headset fa-4x text-primary"></i>
                     </div>
-                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste eveniet optio soluta impedit
-                        dolorum. Corporis impedit perspiciatis, voluptatem natus vel doloremque sequi praesentium
-                        quod a odit, quia ex illo officiis fugiat, animi vero rem est expedita tenetur eos ratione
-                        nulla nisi iure molestias? At fugiat reprehenderit temporibus. Vel, alias vitae.</p>
-                    <p class="mb-0">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Autem voluptate
-                        itaque repudiandae rem enim deleniti, quae optio magnam dignissimos, molestias, inventore
-                        nam iusto iste sit. Maiores id inventore doloremque? Numquam?</p>
+                    <p align="justify">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        Support ticket adalah sistem layanan pelanggan yang digunakan untuk melacak dan mengelola permintaan
+                        bantuan atau masalah pelanggan. Dalam sistem ini, pelanggan dapat membuat tiket dengan mengirimkan
+                        permintaan bantuan atau masalah yang mereka hadapi, dan tim dukungan dapat memantau dan menangani
+                        tiket tersebut sampai selesai. </p>
+                    <p align="justify" class="mb-0">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        Support ticket biasanya digunakan oleh perusahaan untuk memastikan bahwa permintaan
+                        pelanggan diterima dan ditangani dengan efisien dan tepat waktu.</p>
                 </div>
             </div>
         </div>
