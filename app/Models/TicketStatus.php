@@ -36,9 +36,4 @@ class TicketStatus extends Model
     {
         return self::STATUS_OPTIONS;
     }
-
-    public function ticket()
-    {
-        return $this->hasMany(Ticket::class);
-    }
 }

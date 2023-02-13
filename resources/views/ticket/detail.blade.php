@@ -3,6 +3,10 @@
 @section('title', 'Detail Tikcket')
 
 @section('content')
+    @php
+        use Carbon\Carbon;
+    @endphp
+
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800"><strong>Ticket /</strong> Detail Ticket</h1>
@@ -58,11 +62,28 @@
                             <p><b>Status</b></p>
                         </div>
                         <div class="col-lg-9">
-                            <span style="font-size: 14px"
+                            @if ($ticket->ticketStatus)
+                                <span
+                                    class="badge p-2 {{ $ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->status == 'to do'? 'badge-secondary': ($ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->status == 'on progress'? 'badge-warning': ($ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->status == 'testing'? 'badge-info': ($ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->status == 'staging'? 'badge-primary': ($ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->status == 'done'? 'badge-success': '')))) }}">
+                                    {{ ucfirst($ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->status) }}
+                                </span>
+                            @else
+                                <span>-</span>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        @foreach ($status as $sts)
+                            <div class="col-lg-3"></div>
+                            <div class="col-lg-9 d-flex justify-content-between">
+                                <p>{{ ucfirst($sts->status) }}</p>
+                                <p>{{ Carbon::parse($sts->created_at)->diffForHumans() }}</p>
+                                {{-- <span style="font-size: 14px"
                                 class="badge p-2 {{ $ticket->ticketStatus->status == 'to do' ? 'badge-secondary' : ($ticket->ticketStatus->status == 'on progress' ? 'badge-warning' : ($ticket->ticketStatus->status == 'testing' ? 'badge-info' : ($ticket->ticketStatus->status == 'staging' ? 'badge-primary' : ($ticket->ticketStatus->status == 'done' ? 'badge-success' : '')))) }}">
                                 {{ ucfirst($ticket->ticketStatus->status) }}
-                            </span>
-                        </div>
+                            </span> --}}
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -89,10 +110,14 @@
                                 <p><b>Status</b></p>
                             </div>
                             <div class="col-lg-7">
-                                <span style="font-size: 14px"
-                                    class="badge p-2 {{ $ticket->ticketStatus->status == 'to do' ? 'badge-secondary' : ($ticket->ticketStatus->status == 'on progress' ? 'badge-warning' : ($ticket->ticketStatus->status == 'testing' ? 'badge-info' : ($ticket->ticketStatus->status == 'staging' ? 'badge-primary' : ($ticket->ticketStatus->status == 'done' ? 'badge-success' : '')))) }}">
-                                    {{ ucfirst($ticket->ticketStatus->status) }}
-                                </span>
+                                @if ($ticket->ticketStatus)
+                                    <span
+                                        class="badge p-2 {{ $ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->status == 'to do'? 'badge-secondary': ($ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->status == 'on progress'? 'badge-warning': ($ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->status == 'testing'? 'badge-info': ($ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->status == 'staging'? 'badge-primary': ($ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->status == 'done'? 'badge-success': '')))) }}">
+                                        {{ ucfirst($ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->status) }}
+                                    </span>
+                                @else
+                                    <span>-</span>
+                                @endif
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -100,7 +125,16 @@
                                 <p><b>Description</b></p>
                             </div>
                             <div class="col-lg-7">
-                                <p>{{ $ticket->ticketStatus->description == '' ? '-' : $ticket->ticketStatus->description }}</p>
+                                @if ($ticket->ticketStatus)
+                                    <p>
+                                        {!! ucfirst(
+                                            $ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->description,
+                                        ) !!}
+                                    </p>
+                                @else
+                                    <p>-</p>
+                                @endif
+                                </p>
                             </div>
                         </div>
                     </div>

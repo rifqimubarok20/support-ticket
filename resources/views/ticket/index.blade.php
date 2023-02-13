@@ -62,16 +62,16 @@
                     <tbody>
                         @foreach ($ticket as $item)
                             <tr>
-                                <td>
+                                <td style="vertical-align: middle">
                                     @if ($item->expired_at >= Carbon\Carbon::now())
                                         <span class="badge badge-warning">New</span>
                                     @endif
                                     {{ $loop->iteration }}
                                 </td>
-                                <td>{{ $item->product->nama }}</td>
-                                <td>{{ $item->client->name }}</td>
+                                <td style="vertical-align: middle">{{ $item->product->nama }}</td>
+                                <td style="vertical-align: middle">{{ $item->client->name }}</td>
                                 <td>{{-- {{ $item->issue }} --}}{!! $item->issue !!}</td>
-                                <td class="text-center">
+                                <td class="text-center" style="vertical-align: middle">
                                     @if ($item->file)
                                         <a class="text-primary" href="{{ asset('storage/' . $item->file) }}"
                                             target="_blank">
@@ -81,11 +81,17 @@
                                         <p>-</p>
                                     @endif
                                 </td>
-                                <td class="text-center">
-                                    <span
-                                        class="badge p-2 {{ $item->ticketStatus->status == 'to do' ? 'badge-secondary' : ($item->ticketStatus->status == 'on progress' ? 'badge-warning' : ($item->ticketStatus->status == 'testing' ? 'badge-info' : ($item->ticketStatus->status == 'staging' ? 'badge-primary' : ($item->ticketStatus->status == 'done' ? 'badge-success' : '')))) }}">{{ ucfirst($item->ticketStatus->status) }}</span>
+                                <td class="text-center" style="vertical-align: middle">
+                                    @if ($item->ticketStatus)
+                                        <span
+                                            class="badge p-2 {{ $item->ticketStatus()->where('ticket_id', $item->id)->latest()->first()->status == 'to do'? 'badge-secondary': ($item->ticketStatus()->where('ticket_id', $item->id)->latest()->first()->status == 'on progress'? 'badge-warning': ($item->ticketStatus()->where('ticket_id', $item->id)->latest()->first()->status == 'testing'? 'badge-info': ($item->ticketStatus()->where('ticket_id', $item->id)->latest()->first()->status == 'staging'? 'badge-primary': ($item->ticketStatus()->where('ticket_id', $item->id)->latest()->first()->status == 'done'? 'badge-success': '')))) }}">{{ ucfirst($item->ticketStatus()->where('ticket_id', $item->id)->latest()->first()->status) }}</span>
+                                    @else
+                                        <span>-</span>
+                                    @endif
+                                    {{-- <span
+                                        class="badge p-2 {{ $status->status == 'to do' ? 'badge-secondary' : ($status->status == 'on progress' ? 'badge-warning' : ($status->status == 'testing' ? 'badge-info' : ($status->status == 'staging' ? 'badge-primary' : ($status->status == 'done' ? 'badge-success' : '')))) }}">{{ ucfirst($status->status) }}</span> --}}
                                 </td>
-                                <td class="text-center px-0">
+                                <td class="text-center px-0" style="vertical-align: middle">
                                     <a href="/ticket/{{ $item->id }}" class="btn btn-circle btn-sm btn-primary"
                                         data-toggle="tooltip" data-placement="bottom" title="Detail"><i
                                             class="fas fa-eye"></i></a>
