@@ -69,7 +69,7 @@ class TicketController extends Controller
         $issue = $request->input('issue');
         $file = $request->file('file');
 
-        $status = TicketStatus::firstOrCreate(['status' => 'to do']);
+        // $status = TicketStatus::firstOrCreate(['status' => 'to do']);
         
         $path = Storage::putFile('documents', $file);
 
@@ -78,14 +78,13 @@ class TicketController extends Controller
         $ticket->client_id = $client_id;
         $ticket->issue = $issue;
         $ticket->file = $path;
-        $ticket->status_id = $status->id;
+        // $ticket->status_id = $status->id;
         $ticket->expired_at = Carbon::now()->addDays(2);
         $ticket->save();
         
         $status = new TicketStatus;
         $status->status = 'to do';
         $status->ticket_id = $ticket->id;
-        // $status->description = $request->description;
         $status->save();
 
         return redirect()->route('ticket.index')
@@ -124,20 +123,6 @@ class TicketController extends Controller
         }
 
         $ticket->save();
-
-        // $ticket->user_id = $request->user_id;
-        // if ($ticket->status == 'to do') {
-        //     $ticket->status = 'on progress';
-        // }
-        // $ticket->save();
-        // $validatedData = $request->validate([
-        //     'user_id' => '',
-        //     'status' => '',
-        //     'description' => '',
-        // ]);
-
-        // Ticket::where('id', $ticket->id)
-        //     ->update($validatedData);
 
         return redirect()->route('ticket.index')
             ->with('success', 'Ticket Berhasil Di Update!');
