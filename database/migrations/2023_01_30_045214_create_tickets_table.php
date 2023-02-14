@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('file');
             $table->timestamp('expired_at')->nullable()->useCurrentOnUpdate();
             $table->foreignId('user_id')->nullable();
-            $table->foreignId('status_id')->nullable();
             $table->timestamps();
         });
     }
