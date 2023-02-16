@@ -23,6 +23,7 @@ return new class extends Migration
             $table->foreignId('client_id')->nullable();
             $table->softDeletes();
             $table->enum('role', ['admin', 'client', 'programmer'])->default('client');
+            $table->integer('tickets_count')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

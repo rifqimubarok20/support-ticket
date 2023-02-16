@@ -108,7 +108,6 @@ class TicketController extends Controller
         $user = auth()->user();
         if ($user->role === "admin") {
             $ticket->user_id = $request->user_id;
-            $ticket->status_id = $status->id;
         } else {
             $ticket->user_id = $user->id;
             $ticket->status_id = $request->status_id;

@@ -3,6 +3,9 @@
 @section('title', 'Dashboard')
 
 @section('content')
+    @php
+        use App\Models\TicketStatus;
+    @endphp
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
@@ -120,7 +123,15 @@
                             <div class="col mr-2">
                                 <div class="text-sm font-weight-bold text-warning text-uppercase mb-1">Ticketing
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $jml_ticket->count() }}</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    @foreach ($jml_ticket as $tkt)
+                                        @if (Auth::user()->role === 'programmer')
+                                            {{ TicketStatus::where('ticket_id', $tkt->id)->latest()->first()->status === 'on progress' ||TicketStatus::where('ticket_id', $tkt->id)->latest()->first()->status === 'testing'? Auth::user()->tickets_count + 1: Auth::user()->tickets_count }}
+                                        @elseif (Auth::user()->role === 'client')
+                                            {{ TicketStatus::where('ticket_id', $tkt->id)->latest()->first()->status === 'staging'? Auth::user()->tickets_count + 1: Auth::user()->tickets_count }}
+                                        @endif
+                                    @endforeach
+                                </div>
                             </div>
                             <div class="col-auto">
                                 <i class="fa-solid fa-ticket-alt fa-2x text-warning"></i>
@@ -138,7 +149,15 @@
                         <div class="col mr-2">
                             <div class="text-sm font-weight-bold text-warning text-uppercase mb-1">Ticketing
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $jml_ticket->count() }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                @foreach ($jml_ticket as $tkt)
+                                    @if (Auth::user()->role === 'programmer')
+                                        {{ TicketStatus::where('ticket_id', $tkt->id)->latest()->first()->status === 'on progress' ||TicketStatus::where('ticket_id', $tkt->id)->latest()->first()->status === 'testing'? Auth::user()->tickets_count + 1: Auth::user()->tickets_count }}
+                                    @elseif (Auth::user()->role === 'client')
+                                        {{ TicketStatus::where('ticket_id', $tkt->id)->latest()->first()->status === 'staging'? Auth::user()->tickets_count + 1: Auth::user()->tickets_count }}
+                                    @endif
+                                @endforeach
+                            </div>
                         </div>
                         <div class="col-auto">
                             <i class="fa-solid fa-ticket-alt fa-2x text-warning"></i>
