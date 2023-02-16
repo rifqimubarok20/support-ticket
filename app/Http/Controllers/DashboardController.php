@@ -23,6 +23,9 @@ class DashboardController extends Controller
             $ticket = Ticket::all();
             $product = Product::all();
             $project = Project::all();
+            $programmerCount = 0;
+            $clientCount = 0;
+            $doneCount = 0;
         } else if ($user->role === "programmer") {
             $ticket = Ticket::where('user_id', $user->id)->with('ticketStatus')->get();
             $product = Product::all();
