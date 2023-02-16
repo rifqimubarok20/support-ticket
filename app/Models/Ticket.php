@@ -18,26 +18,21 @@ class Ticket extends Model
         'issue',
         'file',
         'user_id',
-        'status_id',
-        'expired_at'
+        'status_id'
     ];
 
-    protected $dates = ['expired_at'];
-
-    public function scopeExpired($query)
+    public function product()
     {
-        return $query->where('expired_at', '<', Carbon::now());
-    }
-
-    public function product() {
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
 
-    public function client() {
+    public function client()
+    {
         return $this->belongsTo(Client::class, 'client_id', 'id');
     }
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
