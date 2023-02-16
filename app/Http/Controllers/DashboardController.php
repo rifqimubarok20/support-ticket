@@ -29,6 +29,7 @@ class DashboardController extends Controller
             $project = Project::all();
             $programmerCount = 0;
             $clientCount = 0;
+            $doneCount = 0;
 
             foreach ($ticket as $tkt) {
                 $latestStatus = $tkt->ticketStatus()->latest()->first();
@@ -36,6 +37,9 @@ class DashboardController extends Controller
                     $programmerCount++;
                 } elseif ($latestStatus->status == 'staging') {
                     $clientCount++;
+                    $programmerCount - 1;
+                } elseif ($latestStatus->status == 'done') {
+                    $doneCount++;
                     $programmerCount - 1;
                 }
             }
@@ -68,6 +72,7 @@ class DashboardController extends Controller
             'jml_ticket' => $ticket,
             'programmerCount' => $programmerCount,
             'clientCount' => $clientCount,
+            'doneCount' => $doneCount,
         ]);
     }
 
