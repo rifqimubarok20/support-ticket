@@ -24,7 +24,7 @@ class TicketController extends Controller
     public function index()
     {
         $user = auth()->user();
-        
+
         if ($user->role === "admin") {
             $tickets = Ticket::with('ticketStatus')->get();
         } else if ($user->role === "programmer") {
@@ -32,8 +32,7 @@ class TicketController extends Controller
         } else {
             $tickets = Ticket::where('client_id', $user->client_id)->with('client', 'product', 'user', 'ticketStatus')->get();
         }
-        $labels = Ticket::whereDate('expired_at', '>', now())->get();
-        
+
         return view('ticket.index', [
             'ticket' => $tickets
         ]);
@@ -70,7 +69,7 @@ class TicketController extends Controller
         $file = $request->file('file');
 
         // $status = TicketStatus::firstOrCreate(['status' => 'to do']);
-        
+
         $path = Storage::putFile('documents', $file);
 
         $ticket = new Ticket;
@@ -78,10 +77,8 @@ class TicketController extends Controller
         $ticket->client_id = $client_id;
         $ticket->issue = $issue;
         $ticket->file = $path;
-        // $ticket->status_id = $status->id;
-        $ticket->expired_at = Carbon::now()->addDays(2);
         $ticket->save();
-        
+
         $status = new TicketStatus;
         $status->status = 'to do';
         $status->ticket_id = $ticket->id;
@@ -112,7 +109,7 @@ class TicketController extends Controller
         $status = TicketStatus::firstOrCreate(['status' => 'on progress', 'ticket_id' => $ticket->id]);
         $status->ticket_id = $ticket->id;
 
-        
+
         $user = auth()->user();
         if ($user->role === "admin") {
             $ticket->user_id = $request->user_id;
@@ -170,5 +167,18 @@ class TicketController extends Controller
         return redirect()->route('ticket.index')
             ->with('success', 'Status Berhasil Di Ubah!');
     }
+
+//     <!-- Tampilan blade Laravel -->
+// @foreach ($data as $d)
+//   <div class="item">
+//     <span>{{ $d->title }}</span>
+//     @if ($d->created_at->diffInSeconds() < 10)
+//       <span class="label">New</span>
+//     @endif
+//   </div>
+// @endforeach
+
+
+
 
 }
