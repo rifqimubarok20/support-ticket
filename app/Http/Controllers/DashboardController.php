@@ -27,6 +27,18 @@ class DashboardController extends Controller
             $ticket = Ticket::where('user_id', $user->id)->with('ticketStatus')->get();
             $product = Product::all();
             $project = Project::all();
+            $programmerCount = 0;
+            $clientCount = 0;
+
+            foreach ($ticket as $tkt) {
+                $latestStatus = $tkt->ticketStatus()->latest()->first();
+                if ($latestStatus->status == 'on progress' || $latestStatus->status == 'testing') {
+                    $programmerCount++;
+                } elseif ($latestStatus->status == 'staging') {
+                    $clientCount++;
+                    $programmerCount - 1;
+                }
+            }
         } else if ($user->role === 'client') {
             if (!$user->client_id) {
                 return view('auth.pilihUnit', compact('client'));
@@ -34,6 +46,18 @@ class DashboardController extends Controller
             $ticket = Ticket::where('client_id', $user->client_id)->with('client', 'product', 'user', 'ticketStatus')->get();
             $product = Product::where('client_id', $user->client_id)->with('client')->get();
             $project = Project::where('client_id', $user->client_id)->with('client', 'product', 'documents')->get();
+            $programmerCount = 0;
+            $clientCount = 0;
+
+            foreach ($ticket as $tkt) {
+                $latestStatus = $tkt->ticketStatus()->latest()->first();
+                if ($latestStatus->status == 'on progress' || $latestStatus->status == 'testing') {
+                    $programmerCount++;
+                } elseif ($latestStatus->status == 'staging') {
+                    $clientCount++;
+                    $programmerCount - 1;
+                }
+            }
         }
 
         return view('dashboard', [
@@ -42,6 +66,8 @@ class DashboardController extends Controller
             'jml_project' => $project,
             'jml_user' => User::all(),
             'jml_ticket' => $ticket,
+            'programmerCount' => $programmerCount,
+            'clientCount' => $clientCount,
         ]);
     }
 
