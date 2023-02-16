@@ -16,11 +16,6 @@ use Illuminate\Support\Facades\Response;
 
 class TicketController extends Controller
 {
-    public function __construct()
-    {
-        Ticket::expired()->delete();
-    }
-
     public function index()
     {
         $user = auth()->user();

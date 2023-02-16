@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
             'password' => bcrypt('admin123'),
             'role' => 'admin',
         ]);
-        
+
         DB::table('users')->insert([
             'name' => 'Haikal',
             'email' => 'haikal@gmail.com',
@@ -39,6 +39,14 @@ class UserSeeder extends Seeder
             'email_verified_at' => Carbon::now(),
             'password' => bcrypt('123456'),
             'role' => 'programmer',
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'Arif',
+            'email' => 'arif@gmail.com',
+            'email_verified_at' => Carbon::now(),
+            'password' => bcrypt('123456'),
+            'role' => 'client',
         ]);
     }
 }
