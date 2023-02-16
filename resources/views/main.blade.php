@@ -74,7 +74,7 @@
           $('.label').fadeOut('slow', function() {
             $(this).remove();
           });
-        }, 172800000);
+        }, 86400000);
       });
 </script>
 
