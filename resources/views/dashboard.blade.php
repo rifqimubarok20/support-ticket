@@ -9,19 +9,6 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-        {{-- <h1 class="h3 mb-0 text-gray-800">
-            @foreach ($jml_ticket as $tkt)
-                @if (Auth::user()->role === 'programmer')
-                    <p>Jumlah tiket client:
-                        {{ TicketStatus::where('ticket_id', $tkt->id)->latest()->first()->status === 'on progress' ||TicketStatus::where('ticket_id', $tkt->id)->latest()->first()->status === 'testing'? Auth::user()->tickets_count + 1: Auth::user()->tickets_count }}
-                    </p>
-                @elseif (Auth::user()->role === 'client')
-                    <p>Jumlah tiket programmer:
-                        {{ TicketStatus::where('ticket_id', $tkt->id)->latest()->first()->status === 'staging'? Auth::user()->tickets_count + 1: Auth::user()->tickets_count }}
-                    </p>
-                @endif
-            @endforeach
-        </h1> --}}
     </div>
 
     @if (Auth::user()->role == 'admin')
