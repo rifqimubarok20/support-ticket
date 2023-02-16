@@ -167,18 +167,4 @@ class TicketController extends Controller
         return redirect()->route('ticket.index')
             ->with('success', 'Status Berhasil Di Ubah!');
     }
-
-//     <!-- Tampilan blade Laravel -->
-// @foreach ($data as $d)
-//   <div class="item">
-//     <span>{{ $d->title }}</span>
-//     @if ($d->created_at->diffInSeconds() < 10)
-//       <span class="label">New</span>
-//     @endif
-//   </div>
-// @endforeach
-
-
-
-
 }
