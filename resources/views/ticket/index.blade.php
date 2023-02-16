@@ -63,7 +63,7 @@
                         @foreach ($ticket as $item)
                             <tr>
                                 <td style="vertical-align: middle">
-                                    @if ($item->expired_at >= Carbon\Carbon::now())
+                                    @if ($item->created_at->diffInDays() < 2)
                                         <span class="badge badge-warning">New</span>
                                     @endif
                                     {{ $loop->iteration }}

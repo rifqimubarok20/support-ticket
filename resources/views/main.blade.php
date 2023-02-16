@@ -68,6 +68,16 @@
     })
 </script>
 
+<script>
+      $(document).ready(function() {
+        setTimeout(function() {
+          $('.label').fadeOut('slow', function() {
+            $(this).remove();
+          });
+        }, 172800000);
+      });
+</script>
+
 </body>
 
 </html>
