@@ -13,12 +13,12 @@ class Ticket extends Model
     use HasFactory;
 
     protected $fillable = [
+        'no_ticket',
         'product_id',
         'client_id',
         'issue',
         'file',
-        'user_id',
-        'status_id'
+        'user_id'
     ];
 
     public function product()
@@ -38,6 +38,6 @@ class Ticket extends Model
 
     public function ticketStatus()
     {
-        return $this->hasmany(TicketStatus::class, 'ticket_id');
+        return $this->hasMany(TicketStatus::class, 'ticket_id');
     }
 }

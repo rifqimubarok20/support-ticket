@@ -3,6 +3,9 @@
 @section('title', 'Ticketing')
 
 @section('content')
+    @php
+        use Illuminate\Support\Str;
+    @endphp
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Ticket</h1>
@@ -13,9 +16,15 @@
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
-            {{-- <button type="button" class="close" data-disniss="alert" aria-hidden="true">&times;</button> --}}
             <h5><i class="icon fa fa-check-square"></i> Berhasil!!!</h5>
             {{ session('success') }}
+        </div>
+    @elseif (session()->has('delete'))
+        <div class="alert alert-danger alert-dismissible col-lg-12" role='alert'>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h6>{{ session('delete') }}</h6>
         </div>
     @endif
 
@@ -31,7 +40,7 @@
                         <span class="icon text-white-50">
                             <i class="fas fa-plus"></i>
                         </span>
-                        <span class="text">Tambah Ticket</span>
+                        <span class="text">Ajukan Ticket</span>
                     </a>
                 </div>
             @endif
@@ -40,38 +49,41 @@
                     <thead>
                         <tr>
                             <th>No.</th>
-                            <th>Product</th>
-                            <th>Client</th>
-                            <th>Issue</th>
-                            <th class="text-center">File</th>
+                            <th>Nomor Tiket</th>
+                            <th>Produk</th>
+                            <th>Klien</th>
+                            <th>Isu</th>
+                            {{-- <th class="text-center">File</th> --}}
                             <th class="text-center">Status</th>
-                            <th class="text-center">Actions</th>
+                            <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
                             <th>No.</th>
-                            <th>Product</th>
-                            <th>Client</th>
-                            <th>Issue</th>
-                            <th class="text-center">File</th>
+                            <th>Nomor Tiket</th>
+                            <th>Produk</th>
+                            <th>Klien</th>
+                            <th>Isu</th>
+                            {{-- <th class="text-center">File</th> --}}
                             <th class="text-center">Status</th>
-                            <th class="text-center">Actions</th>
+                            <th class="text-center">Aksi</th>
                         </tr>
                     </tfoot>
                     <tbody>
                         @foreach ($ticket as $item)
                             <tr>
                                 <td style="vertical-align: middle">
+                                    {{ $loop->iteration }}
                                     @if ($item->created_at->diffInDays() < 2)
                                         <span class="badge badge-warning">New</span>
                                     @endif
-                                    {{ $loop->iteration }}
                                 </td>
+                                <td style="vertical-align: middle">{{ $item->no_ticket }}</td>
                                 <td style="vertical-align: middle">{{ $item->product->nama }}</td>
                                 <td style="vertical-align: middle">{{ $item->client->name }}</td>
-                                <td>{{-- {{ $item->issue }} --}}{!! $item->issue !!}</td>
-                                <td class="text-center" style="vertical-align: middle">
+                                <td>{!! Str::limit($item->issue, 51, '...') !!}</td>
+                                {{-- <td class="text-center" style="vertical-align: middle">
                                     @if ($item->file)
                                         <a class="text-primary" href="{{ asset('storage/' . $item->file) }}"
                                             target="_blank">
@@ -80,39 +92,72 @@
                                     @else
                                         <p>-</p>
                                     @endif
-                                </td>
+                                </td> --}}
                                 <td class="text-center" style="vertical-align: middle">
-                                    @if ($item->ticketStatus)
+                                    @php
+                                        $latestStatus = $item
+                                            ->ticketStatus()
+                                            ->where('ticket_id', $item->id)
+                                            ->latest()
+                                            ->first();
+                                    @endphp
+                                    @if ($latestStatus)
+                                        @php
+                                            $status = $latestStatus->status;
+                                        @endphp
                                         <span
-                                            class="badge p-2 {{ $item->ticketStatus()->where('ticket_id', $item->id)->latest()->first()->status == 'to do'? 'badge-secondary': ($item->ticketStatus()->where('ticket_id', $item->id)->latest()->first()->status == 'on progress'? 'badge-warning': ($item->ticketStatus()->where('ticket_id', $item->id)->latest()->first()->status == 'testing'? 'badge-info': ($item->ticketStatus()->where('ticket_id', $item->id)->latest()->first()->status == 'staging'? 'badge-primary': ($item->ticketStatus()->where('ticket_id', $item->id)->latest()->first()->status == 'done'? 'badge-success': '')))) }}">{{ ucfirst($item->ticketStatus()->where('ticket_id', $item->id)->latest()->first()->status) }}</span>
+                                            class="badge p-2
+                                        {{ $status == 'pending' ? 'badge-secondary' : ($status == 'to do' ? 'badge-dark' : ($status == 'on progress' ? 'badge-warning' : ($status == 'testing' ? 'badge-info' : ($status == 'staging' ? 'badge-primary' : ($status == 'done' ? 'badge-success' : ''))))) }}">
+                                            {{ ucfirst($status) }}
+                                        </span>
+                                        @if (Auth::user()->can('admin') || Auth::user()->can('programmer'))
+                                            @if ($item->status == 'close')
+                                                <hr class="mt-2 mb-2">
+                                                <sup class="text-danger">*Tiket di Tutup oleh Klien</sup>
+                                            @endif
+                                        @endif
+                                        @can('client')
+                                            @if ($item->status == 'open')
+                                                -
+                                                <a href="/ticket/close/{{ $item->id }}"
+                                                    class="btn btn-circle btn-sm btn-danger" data-toggle="tooltip"
+                                                    data-placement="top" title="Close Ticket"><i
+                                                        class="fas fa-lock-open"></i></a>
+                                            @elseif ($item->status == 'close')
+                                                -
+                                                <a href="/ticket/open/{{ $item->id }}"
+                                                    class="btn btn-circle btn-sm btn-danger" data-toggle="tooltip"
+                                                    data-placement="top" title="Open Ticket"><i class="fas fa-lock"></i></a>
+                                            @endif
+                                        @endcan
                                     @else
                                         <span>-</span>
                                     @endif
-                                    {{-- <span
-                                        class="badge p-2 {{ $status->status == 'to do' ? 'badge-secondary' : ($status->status == 'on progress' ? 'badge-warning' : ($status->status == 'testing' ? 'badge-info' : ($status->status == 'staging' ? 'badge-primary' : ($status->status == 'done' ? 'badge-success' : '')))) }}">{{ ucfirst($status->status) }}</span> --}}
                                 </td>
                                 <td class="text-center px-0" style="vertical-align: middle">
                                     <a href="/ticket/{{ $item->id }}" class="btn btn-circle btn-sm btn-primary"
                                         data-toggle="tooltip" data-placement="bottom" title="Detail"><i
                                             class="fas fa-eye"></i></a>
-                                    @if (Auth::user()->can('programmer'))
+                                    @if (Auth::user()->can('programmer') && $item->status !== 'close')
                                         <a href="/ticket/status/{{ $item->id }}"
                                             class="btn btn-circle btn-sm btn-success" data-toggle="tooltip"
-                                            data-placement="top" title="Status"><i class="fas fa-plus"></i></a>
+                                            data-placement="top" title="Edit Status"><i class="fas fa-plus"></i></a>
                                     @endif
-                                    @if (Auth::user()->can('admin'))
-                                        <a href="/ticket/{{ $item->id }}/edit" class="btn btn-circle btn-sm btn-warning"
-                                            data-toggle="tooltip" data-placement="top" title="Edit"><i
-                                                class="fa fa-edit"></i></a>
+                                    @if (Auth::user()->can('admin') && $latestStatus && $latestStatus->status != 'done' && $item->status !== 'close')
+                                        <a href="/ticket/{{ $item->id }}/edit"
+                                            class="btn btn-circle btn-sm btn-warning" data-toggle="tooltip"
+                                            data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
                                     @endif
                                     @can('admin')
-                                        <form action="/ticket/{{ $item->id }}" method="POST" class="d-inline">
-                                            @method('delete')
-                                            @csrf
-                                            <button class="btn btn-circle btn-sm btn-danger"
-                                                onclick="return confirm('Yakin Mau Di Hapus?')"><i
-                                                    class="fa fa-trash"></i></button>
-                                        </form>
+                                        @if (!$latestStatus || ($latestStatus->status != 'done' && $item->status !== 'close'))
+                                            <form action="/ticket/{{ $item->id }}" method="POST" class="d-inline">
+                                                @method('delete')
+                                                @csrf
+                                                <button class="btn btn-circle btn-sm btn-danger" title="Hapus"
+                                                    onclick="return confirm('Yakin Mau Di Hapus?')"><i
+                                                        class="fa fa-trash"></i></button>
+                                            </form>
+                                        @endif
                                     @endcan
                                 </td>
                             </tr>

@@ -115,8 +115,8 @@
                     </div>
                 @endcan
                 <div class="form-row">
-                    <a href="/ticket" class="btn btn-danger my-3 mr-2">Back</a>
-                    <button type="submit" class="btn btn-primary my-3">Update</button>
+                    <a href="/ticket" class="btn btn-danger my-3 mr-2">Kembali</a>
+                    <button type="submit" class="btn btn-primary my-3">Simpan</button>
                 </div>
             </form>
         </div>

@@ -13,12 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('ticket_statuses', function (Blueprint $table) {
-            $table->id();
-            $table->enum('status', ['pending', 'to do', 'on progress', 'testing', 'staging', 'done'])->default('to do');
-            $table->longText('description')->nullable();
-            $table->foreignId('ticket_id')->nullable();
-            $table->timestamps();
+        Schema::table('tickets', function (Blueprint $table) {
+            $table->string('no_ticket')->unique()->after('id');
         });
     }
 
@@ -29,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('status');
+        Schema::table('tickets', function (Blueprint $table) {
+            $table->dropColumn('no_ticket');
+        });
     }
 };

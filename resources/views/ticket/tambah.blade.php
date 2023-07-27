@@ -38,16 +38,20 @@
                                 <select class="custom-select mr-sm-2" id="product" name="product_id" required>
                                     <option value="" selected hidden>Pilih Product</option>
                                     @foreach ($project as $prd)
+                                        @php
+                                            $tanggal = \Carbon\Carbon::parse($prd->finish_project);
+                                            $tanggal->locale('id');
+                                        @endphp
                                         @if (Carbon::now()->gt($prd->finish_project))
                                             <option value="{{ $prd->product->id }}" style="color: #a2a2a5" disabled>
                                                 {{ $prd->product->nama }} -
                                                 (Support Sudah tidak Berlaku sejak
-                                                {{ $prd->finish_project }})
+                                                {{ $tanggal->isoFormat('D MMMM YYYY') }})
                                             </option>
                                         @else
                                             <option value="{{ $prd->product->id }}" class="py-3">
                                                 {{ $prd->product->nama }} - (Support
-                                                Berlaku Sampai {{ $prd->finish_project }})</option>
+                                                Berlaku Sampai {{ $tanggal->isoFormat('D MMMM YYYY') }})</option>
                                         @endif
                                     @endforeach
                                 </select>
@@ -58,7 +62,7 @@
 
                         <div class="form-row">
                             <div class="form-group col-md-12">
-                                <label for="file">File input</label>
+                                <label for="file">Attach Assignment</label>
                                 <input type="file" class="form-control-file" name="file" id="file" required>
                             </div>
                         </div>
@@ -69,8 +73,8 @@
                             </div>
                         </div>
                         <div class="form-row justify-content-start">
-                            <a href="/ticket" class="btn btn-danger my-3 px-4 mr-2">Back</a>
-                            <button type="submit" class="btn btn-primary my-3 px-4">Submit</button>
+                            <a href="/ticket" class="btn btn-danger my-3 px-4 mr-2">Kembali</a>
+                            <button type="submit" class="btn btn-primary my-3 px-4">Simpan</button>
                         </div>
                     </div>
                 </div>

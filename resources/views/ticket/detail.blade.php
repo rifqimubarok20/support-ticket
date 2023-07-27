@@ -12,7 +12,7 @@
         <h1 class="h3 mb-0 text-gray-800"><strong>Ticket /</strong> Detail Ticket</h1>
     </div>
 
-    <a href="/ticket" class="btn btn-sm btn-danger" style="margin-bottom: 10px;"><i class="fa fa-arrow-left"></i>
+    <a href="/ticket" class="btn btn-sm btn-danger ml-4" style="margin-bottom: 10px;"><i class="fa fa-arrow-left"></i>
         Kembali</a>
 
     <div class="container pl-0 pr-5">
@@ -64,7 +64,7 @@
                         <div class="col-lg-9">
                             @if ($ticket->ticketStatus)
                                 <span
-                                    class="badge p-2 {{ $ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->status == 'to do'? 'badge-secondary': ($ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->status == 'on progress'? 'badge-warning': ($ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->status == 'testing'? 'badge-info': ($ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->status == 'staging'? 'badge-primary': ($ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->status == 'done'? 'badge-success': '')))) }}">
+                                    class="badge p-2 {{ $ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->status == 'to do'? 'badge-dark': ($ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->status == 'on progress'? 'badge-warning': ($ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->status == 'testing'? 'badge-info': ($ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->status == 'staging'? 'badge-primary': ($ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->status == 'done'? 'badge-success': ($ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->status == 'pending'? 'badge-secondary': ''))))) }}">
                                     {{ ucfirst($ticket->ticketStatus()->where('ticket_id', $ticket->id)->latest()->first()->status) }}
                                 </span>
                             @else
@@ -79,7 +79,7 @@
                                 <ul style="padding-left: 1.875rem">
                                     <li>
                                         <b
-                                            class="{{ $sts->status == 'to do' ? 'text-secondary' : ($sts->status == 'on progress' ? 'text-warning' : ($sts->status == 'testing' ? 'text-info' : ($sts->status == 'staging' ? 'text-primary' : ($sts->status == 'done' ? 'text-success' : '')))) }}">
+                                            class="{{ $sts->status == 'to do' ? 'text-dark' : ($sts->status == 'on progress' ? 'text-warning' : ($sts->status == 'testing' ? 'text-info' : ($sts->status == 'staging' ? 'text-primary' : ($sts->status == 'done' ? 'text-success' : ($sts->status == 'pending' ? 'text-secondary' : ''))))) }}">
                                             {{ ucfirst($sts->status) }}
                                         </b>
                                         <p style="font-size: 0.813rem">

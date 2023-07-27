@@ -19,6 +19,10 @@ class DashboardController extends Controller
         $user = auth()->user();
         $client = Client::all();
 
+        if (!$user) {
+            return view('auth.login');
+        }
+
         if ($user->role === "admin") {
             $ticket = Ticket::all();
             $product = Product::all();
@@ -55,6 +59,7 @@ class DashboardController extends Controller
             $project = Project::where('client_id', $user->client_id)->with('client', 'product', 'documents')->get();
             $programmerCount = 0;
             $clientCount = 0;
+            $doneCount = 0;
 
             foreach ($ticket as $tkt) {
                 $latestStatus = $tkt->ticketStatus()->latest()->first();

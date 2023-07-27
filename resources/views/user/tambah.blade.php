@@ -21,6 +21,22 @@
         </div>
     </div>
 
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="list-unstyled mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <!-- Pesan sukses -->
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
 
     <div class="col-lg-8">
         <form action="/user" method="POST" enctype="multipart/form-data">
@@ -28,46 +44,46 @@
             <div class="from-group mb-3">
                 <label for="name" class="form-label">Nama User</label>
                 <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name"
-                    placeholder="Masukkan Nama User..." required>
+                    value="{{ old('name') }}" placeholder="Masukkan Nama User..." required>
+                @error('name')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
-            @error('name')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
             <div class="from-group mb-3">
                 <label for="email" class="form-label">Email</label>
                 <input type="text" class="form-control @error('email') is-invalid @enderror" id="email"
-                    name="email" placeholder="Masukkan Email...">
+                    name="email" value="{{ old('email') }}" placeholder="Masukkan Email...">
+                @error('email')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
-            @error('email')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
 
             <input type="hidden" name="email_verified_at" value={{ Carbon::now() }}>
 
             <div class="from-group mb-3">
                 <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control @error('password') is-invalid @enderror" id="password"
-                    name="password" placeholder="Masukkan Password...">
+                    name="password" value="{{ old('password') }}" placeholder="Masukkan Password...">
+                @error('password')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
-            @error('password')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
             <div class="from-group mb-3">
                 <label for="image" class="form-label">Foto</label>
                 <input type="file" class="form-control-file @error('image') is-invalid @enderror" id="image"
                     name="image" placeholder="Masukkan Foto...">
+                @error('image')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
-            @error('image')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
             <div class="from-group mb-3">
                 <label for="role" class="form-label">Role</label>
                 {{-- <input type="text" class="form-control @error('role') is-invalid @enderror" id="role" name="role"
@@ -78,12 +94,12 @@
                     <option value="client">Client</option>
                     <option value="programmer">Programmer</option>
                 </select>
+                @error('role')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
-            @error('role')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
             <div class="from-group mb-3">
                 <label for="role" class="form-label">Unit</label>
                 <select name="client_id" id="unit" class="form-control @error('unit') is-invalid @enderror" disabled>
@@ -92,16 +108,16 @@
                         <option value="{{ $cl->id }}">{{ $cl->name }}</option>
                     @endforeach
                 </select>
+                @error('unit')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
-            @error('unit')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
             <br>
             <div class="from-group mb-5">
-                <button type="submit" class="btn bg-gradient-primary text-white">Simpan</button>
                 <a href="/user" class="btn bg-gradient-danger text-white">Kembali</a>
+                <button type="submit" class="btn bg-gradient-primary text-white">Simpan</button>
             </div>
         </form>
     </div>

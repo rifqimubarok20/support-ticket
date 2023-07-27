@@ -20,7 +20,7 @@
     <a href="/clients" class="btn btn-sm btn-danger" style="margin-bottom: 10px;"><i class="fa fa-arrow-left"></i>
         Kembali</a>
 
-    <div class="card col-lg-10 shadow mb-4">
+    <div class="card col-lg-12 shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Detail Information Client</h6>
         </div>
@@ -31,18 +31,18 @@
                         @if ($client->image)
                             <img style="width: 180px; height: 180px" src="{{ asset('storage/' . $client->image) }}">
                         @else
-                            <img style="width: 180px; height: 180px" src="{{ asset('temp') }}/img/undraw_profile.svg">
+                            <img style="width: 180px; height: 180px" src="{{ asset('temp') }}/img/build.png">
                         @endif
                     </div>
                     <div class="col-sm-8 rounded-right">
                         <div class="row">
-                            <div class="col-sm-8">
+                            <div class="col-sm-12">
                                 <span class="mb-2"><strong>Nama Perusahaan</strong> : </span>
-                                <p class="mb-3" style="font-size: 20px;margin-left: 50%">{{ $client->name }}</p>
+                                <p class="mb-3" style="font-size: 20px;margin-left: 30%">{{ $client->name }}</p>
                                 <span class="mb-2"><strong>Kontak Perusahaan</strong> : </span>
-                                <p class="mb-3" style="font-size: 20px;margin-left: 50%">{{ $client->contact }}</p>
+                                <p class="mb-3" style="font-size: 20px;margin-left: 30%">{{ $client->contact }}</p>
                                 <span class="mb-2"><strong>Alamat Perusahaan</strong> : </span>
-                                <p class="mb-3" style="font-size: 20px;margin-left: 50%">{{ $client->address }}</p>
+                                <p class="mb-3" style="font-size: 20px;margin-left: 30%">{{ $client->address }}</p>
                             </div>
                         </div>
                     </div>
@@ -51,9 +51,12 @@
         </div>
         <div class="card-footer">
             <div class="d-flex justify-content-center">
-                <a href="#facebook" target="_blank" class="mr-3"><i class="fa-brands fa-facebook fa-xl"></i></a>
-                <a href="#instagram" target="_blank" class="mr-3"><i class="fa-brands fa-instagram fa-xl"></i></a>
-                <a href="#website" target="_blank"><i class="fa-sharp fa-solid fa-globe fa-xl"></i></a>
+                <a href="{{ $client->linkedin ? $client->linkedin : '#' }}" target="_blank" class="mr-3"><i
+                        class="fa-brands fa-linkedin fa-xl"></i></a>
+                <a href="{{ $client->instagram ? $client->instagram : '#' }}" target="_blank" class="mr-3"><i
+                        class="fa-brands fa-instagram fa-xl"></i></a>
+                <a href="{{ $client->website ? $client->website : '#' }}" target="_blank"><i
+                        class="fa-sharp fa-solid fa-globe fa-xl"></i></a>
             </div>
         </div>
     </div>

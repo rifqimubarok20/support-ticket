@@ -58,7 +58,9 @@
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="issue">Issue</label>
-                                <div>{!! $ticket->issue !!}</div>
+                                <div
+                                    style="border: 1px solid #d1d3e2; border-radius: 0.35rem; background-color: rgb(234, 236, 244); padding: 0.375rem 0.75rem; height: calc(3.3em + 3.75rem + 12px)">
+                                    {!! $ticket->issue !!}</div>
                                 {{-- <textarea class="form-control" name="issue" id="issue" rows="5" disabled>{!! $ticket->issue !!}</textarea> --}}
                             </div>
                         </div>
@@ -133,9 +135,9 @@
                         </div>
                     </div>
                 @endcan
-                <div class="form-row justify-content-end">
-                    <a href="/ticket" class="btn btn-danger my-3 mr-2">Back</a>
-                    <button type="submit" class="btn btn-primary my-3">Update</button>
+                <div class="form-row">
+                    <a href="/ticket" class="btn btn-danger my-3 mr-2">Kembali</a>
+                    <button type="submit" class="btn btn-primary my-3">Simpan</button>
                 </div>
             </form>
         </div>

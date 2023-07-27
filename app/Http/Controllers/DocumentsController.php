@@ -7,15 +7,17 @@ use Illuminate\Http\Request;
 
 class DocumentsController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $documents = Documents::all();
-        
+
         return view('documents.index', [
             'documents' => $documents
         ]);
     }
 
-    public function create() {
+    public function create()
+    {
         return view('documents.tambah');
     }
 
@@ -51,7 +53,7 @@ class DocumentsController extends Controller
         $documents->name = $request->name;
         $documents->save();
         return redirect()->route('documents.index')
-            ->with('success', 'Dokumen berhasil diupdate!');
+            ->with('update', 'Dokumen Berhasil di Update!');
     }
 
     public function destroy($id)
@@ -59,6 +61,6 @@ class DocumentsController extends Controller
         $documents = Documents::findOrFail($id);
         $documents->delete();
         return redirect()->route('documents.index')
-            ->with('success', 'Dokumen berhasil dihapus!');
+            ->with('delete', 'Dokumen Berhasil di Hapus!');
     }
 }

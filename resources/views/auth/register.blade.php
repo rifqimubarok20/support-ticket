@@ -47,17 +47,16 @@
                                         </div>
                                         <h1 class="h4 text-gray-900 mb-4">Welcome to <br> Support Ticket!</h1>
                                     </div>
-                                    @if(session('error'))
-                                    <div class="alert alert-danger">
-                                        <b>Opps!</b> {{session('error')}}
-                                    </div>
+                                    @if (session('error'))
+                                        <div class="alert alert-danger">
+                                            <b>Opps!</b> {{ session('error') }}
+                                        </div>
                                     @endif
                                     <form action="{{ route('register.post') }}" method="POST" class="user">
                                         @csrf
                                         <div class="form-group">
                                             <input type="text" name="name" class="form-control form-control-user"
-                                                id="name"
-                                                placeholder="Enter Username" required>
+                                                id="name" placeholder="Enter Name..." required>
                                         </div>
                                         <div class="form-group">
                                             <input type="email" name="email" class="form-control form-control-user"
@@ -66,9 +65,14 @@
                                         </div>
                                         <div class="form-group mb-4">
                                             <div class="input-group" id="show_hide_password">
-                                                <input type="password" name='password' class="form-control form-control-user" placeholder="Password" required >
+                                                <input type="password" name='password'
+                                                    class="form-control form-control-user" placeholder="Password"
+                                                    required>
                                                 <div class="input-group-append">
-                                                    <a href="" class="btn" style="border-top-right-radius: 50%;border-bottom-right-radius: 50%; border: 1px solid #d1d3e2"><i class="fa-solid fa-eye-slash mt-2" aria-hidden="true"></i></a>
+                                                    <a href="" class="btn"
+                                                        style="border-top-right-radius: 50%;border-bottom-right-radius: 50%; border: 1px solid #d1d3e2"><i
+                                                            class="fa-solid fa-eye-slash mt-2"
+                                                            aria-hidden="true"></i></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -103,22 +107,26 @@
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous">
+    </script>
     <script>
         $(document).ready(function() {
-        $("#show_hide_password a").on('click', function(event) {
-            event.preventDefault();
-            if($('#show_hide_password input').attr("type") == "text"){
-                $('#show_hide_password input').attr('type', 'password');
-                $('#show_hide_password i').addClass( "fa-solid fa-eye-slash" );
-                $('#show_hide_password i').removeClass( "fa-eye" );
-            }else if($('#show_hide_password input').attr("type") == "password"){
-                $('#show_hide_password input').attr('type', 'text');
-                $('#show_hide_password i').removeClass( "fa-solid fa-eye-slash" );
-                $('#show_hide_password i').addClass( "fa-solid fa-eye" );
-            }
-        });
+            $("#show_hide_password a").on('click', function(event) {
+                event.preventDefault();
+                if ($('#show_hide_password input').attr("type") == "text") {
+                    $('#show_hide_password input').attr('type', 'password');
+                    $('#show_hide_password i').addClass("fa-solid fa-eye-slash");
+                    $('#show_hide_password i').removeClass("fa-eye");
+                } else if ($('#show_hide_password input').attr("type") == "password") {
+                    $('#show_hide_password input').attr('type', 'text');
+                    $('#show_hide_password i').removeClass("fa-solid fa-eye-slash");
+                    $('#show_hide_password i').addClass("fa-solid fa-eye");
+                }
+            });
         });
     </script>
 

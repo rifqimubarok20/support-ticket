@@ -26,6 +26,7 @@ class TicketStatus extends Model
     }
 
     const STATUS_OPTIONS = [
+        'to do' => 'To do',
         'on progress' => 'On Progress',
         'testing' => 'Testing',
         'staging' => 'Staging',

@@ -72,15 +72,21 @@ class TicketController extends Controller
         $ticket->client_id = $client_id;
         $ticket->issue = $issue;
         $ticket->file = $path;
+
+        // Generate a sequentially ordered ticket number (no_ticket)
+        $lastTicket = Ticket::orderBy('id', 'desc')->first();
+        $ticket->no_ticket = 'TICKET-' . str_pad($lastTicket ? $lastTicket->id + 1 : 1, 5, '0', STR_PAD_LEFT);
+
         $ticket->save();
 
         $status = new TicketStatus;
-        $status->status = 'to do';
+        $status->status = 'pending';
+        $status->description = 'Harap Tunggu Admin akan Assign ke IT Teknisi';
         $status->ticket_id = $ticket->id;
         $status->save();
 
         return redirect()->route('ticket.index')
-            ->with('success', 'Ticket Berhasil Dibuat!');
+            ->with('success', 'Ticket Berhasil Diajukan, Harap tunggu!');
     }
 
     public function edit(Ticket $ticket)
@@ -101,22 +107,19 @@ class TicketController extends Controller
 
     public function update(Request $request, Ticket $ticket)
     {
-        $status = TicketStatus::firstOrCreate(['status' => 'on progress', 'ticket_id' => $ticket->id]);
+        $status = TicketStatus::firstOrCreate(['status' => 'to do', 'description' => 'IT Teknisi sudah ditentukan oleh Admin, Tiket akan segera dikerjakan.', 'ticket_id' => $ticket->id]);
         $status->ticket_id = $ticket->id;
 
 
         $user = auth()->user();
         if ($user->role === "admin") {
             $ticket->user_id = $request->user_id;
-        } else {
-            $ticket->user_id = $user->id;
-            $ticket->status_id = $request->status_id;
         }
 
         $ticket->save();
 
         return redirect()->route('ticket.index')
-            ->with('success', 'Ticket Berhasil Di Update!');
+            ->with('success', 'Ticket Berhasil di Assign kepada Programmer');
     }
 
     public function destroy($id)
@@ -124,7 +127,7 @@ class TicketController extends Controller
         $ticket = Ticket::findOrFail($id);
         $ticket->delete();
         return redirect()->route('ticket.index')
-            ->with('success', 'Ticket berhasil di Hapus!');
+            ->with('delete', 'Ticket berhasil di Hapus!');
     }
 
     public function download($id)
@@ -160,5 +163,23 @@ class TicketController extends Controller
 
         return redirect()->route('ticket.index')
             ->with('success', 'Status Berhasil Di Ubah!');
+    }
+
+    public function openTicket($id)
+    {
+        $ticket = Ticket::findOrFail($id);
+        $ticket->status = 'open';
+        $ticket->save();
+
+        return redirect()->back()->with('success', 'Ticket Berhasil di Buka.');
+    }
+
+    public function closeTicket($id)
+    {
+        $ticket = Ticket::findOrFail($id);
+        $ticket->status = 'close';
+        $ticket->save();
+
+        return redirect()->back()->with('success', 'Ticket Berhasil di Tutup.');
     }
 }

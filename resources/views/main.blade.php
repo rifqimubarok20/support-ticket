@@ -69,13 +69,13 @@
 </script>
 
 <script>
-      $(document).ready(function() {
+    $(document).ready(function() {
         setTimeout(function() {
-          $('.label').fadeOut('slow', function() {
-            $(this).remove();
-          });
+            $('.label').fadeOut('slow', function() {
+                $(this).remove();
+            });
         }, 86400000);
-      });
+    });
 </script>
 
 </body>

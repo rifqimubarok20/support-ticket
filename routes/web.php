@@ -28,21 +28,23 @@ use App\Http\Controllers\Auth\VerificationController;
 */
 
 Route::get('/', [AuthController::class, 'index'])->name('login');
-Route::get('registration', [AuthController::class, 'registration'])->name('register');
+// Route::get('registration', [AuthController::class, 'registration'])->name('register');
 
 Route::post('post-login', [AuthController::class, 'postLogin'])->name('login.post');
-Route::post('post-registration', [AuthController::class, 'postRegistration'])->name('register.post');
+// Route::post('post-registration', [AuthController::class, 'postRegistration'])->name('register.post');
 
-Route::get('/email/verify/need-verification', [VerificationController::class, 'notice'])->middleware(['auth'])->name('verification.notice');
-Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->middleware(['auth', 'signed'])->name('verification.verify');
-Route::get('/email/verify/resend-verification', [VerificationController::class, 'send'])->middleware(['auth', 'throttle:6,1',])->name('verification.send');
+// Route::get('/email/verify/need-verification', [VerificationController::class, 'notice'])->middleware(['auth'])->name('verification.notice');
+// Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->middleware(['auth', 'signed'])->name('verification.verify');
+// Route::get('/email/verify/resend-verification', [VerificationController::class, 'send'])->middleware(['auth', 'throttle:6,1',])->name('verification.send');
 
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::middleware(['auth', 'auth.session', 'verified'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::post('/pilih-unit', [DashboardController::class, 'pilihUnit'])->name('pilihUnit');
-});
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+// Route::middleware(['auth', 'auth.session', 'verified'])->group(function () {
+//     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+//     Route::post('/pilih-unit', [DashboardController::class, 'pilihUnit'])->name('pilihUnit');
+// });
 
 Route::resource('/user', UserController::class)->middleware('admin');
 Route::resource('/editprofile', ProfileController::class)->middleware('auth');
@@ -58,5 +60,8 @@ Route::resource('/ticket', TicketController::class)->middleware('auth');
 Route::get('/ticket/download/{id}', [TicketController::class, 'download'])->middleware('auth');
 Route::get('/ticket/status/{id}', [TicketController::class, 'editStatus'])->middleware('auth');
 Route::post('/ticket/status/{id}', [TicketController::class, 'updateStatus'])->middleware('auth');
+Route::get('/ticket/open/{id}', [TicketController::class, 'openTicket'])->name('ticket.open')->middleware('auth');
+Route::get('/ticket/close/{id}', [TicketController::class, 'closeTicket'])->name('ticket.close')->middleware('auth');
+
 
 // Route::resource('/ticket/status', StatusController::class)->middleware('auth');

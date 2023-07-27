@@ -23,6 +23,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'client_id',
+        'image',
         'role',
     ];
 
@@ -45,7 +46,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    public function client() {
+    public function client()
+    {
         return $this->belongsTo(Client::class);
     }
 }

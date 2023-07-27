@@ -17,6 +17,22 @@
             <h5><i class="icon fa fa-check-square"></i> Berhasil!!!</h5>
             {{ session('success') }}
         </div>
+    @elseif (session()->has('update'))
+        <div class="alert alert-warning alert-dismissible col-lg-12" role='alert'>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h5><i class="icon fa fa-check-square"></i> Updated</h5>
+            {{ session('update') }}
+        </div>
+    @elseif (session()->has('delete'))
+        <div class="alert alert-danger alert-dismissible col-lg-12" role='alert'>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h5><i class="icon fa fa-check-square"></i> Deleted</h5>
+            {{ session('delete') }}
+        </div>
     @endif
 
     <!-- DataTales Example -->
@@ -31,7 +47,7 @@
                         <span class="icon text-white-50">
                             <i class="fas fa-plus"></i>
                         </span>
-                        <span class="text">Tambah Document</span>
+                        <span class="text">Tambah</span>
                     </a>
                 </div>
             @endcan
