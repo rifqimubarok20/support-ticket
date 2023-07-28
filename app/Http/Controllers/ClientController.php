@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ClientController extends Controller
 {
@@ -16,7 +18,7 @@ class ClientController extends Controller
     public function index()
     {
         $client = Client::all();
-        
+
         return view('client.index', [
             'client' => $client
         ]);
@@ -40,20 +42,33 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|max:255',
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255|unique:client',
             'address' => 'required',
             'contact' => 'required|max:255',
-            'image' => 'image|file|mimes:jpg,png,jpeg,gif,svg|max:2048'
+            'image' => 'image|file|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'linkedin' => '',
+            'instagram' => '',
+            'website' => ''
+        ], [
+            'name.unique' => 'Perusahaan Client Sudah Terdaftar.',
         ]);
 
-        if($request->file('image')){
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $validatedData = $validator->validated();
+
+        if ($request->file('image')) {
             $validatedData['image'] = $request->file('image')->store('image');
         }
 
         Client::create($validatedData);
 
-        return redirect('/clients')->with('success','Data Client Berhasil Ditambahkan!');
+        return redirect('/clients')->with('success', 'Data Client Berhasil Ditambahkan!');
     }
 
     /**
@@ -92,25 +107,47 @@ class ClientController extends Controller
     public function update(Request $request, Client $client)
     {
         $rules = [
-            'name' => 'required|max:255',
+            'name' => 'required|unique:client,name,' . $client->id,
             'address' => 'required',
             'contact' => '',
-            'image' => 'image|file|mimes:jpg,png,jpeg,gif,svg|max:2048'
+            'image' => 'image|file|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'linkedin' => '',
+            'instagram' => '',
+            'website' => ''
         ];
 
-        $validatedData = $request->validate($rules);
+        $customMessages = [
+            'name.unique' => 'Perusahaan Klien Sudah Terdaftar.',
+        ];
 
-        if($request->file('image')){
-            if($request->oldImage) {
+        $validator = Validator::make($request->all(), $rules, $customMessages);
+
+        if ($validator->fails()) {
+            return redirect()->route('clients.edit', $client)
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // Pengambilan data user berdasarkan ID
+        // $client = Client::find($client);
+
+        // if (!$client) {
+        //     return redirect()->route('clients.edit', $client)
+        //         ->with('error', 'Client tidak ditemukan!');
+        // }
+
+        $validatedData = $validator->validated();
+
+        if ($request->file('image')) {
+            if ($request->oldImage) {
                 Storage::delete($request->oldImage);
             }
             $validatedData['image'] = $request->file('image')->store('images');
         }
 
-        Client::where('id', $client->id)
-            ->update($validatedData);
+        $client->update($validatedData);
 
-        return redirect('/clients')->with('success','Data Telah Berhasil Di Update!!');
+        return redirect('/clients')->with('update', 'Data Client Telah Berhasil Di Update!!');
     }
 
     /**
@@ -121,11 +158,11 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        if($client->image) {
+        if ($client->image) {
             Storage::delete($client->image);
         }
 
         Client::destroy($client->id);
-        return redirect('/clients')->with('success','Data Telah Berhasil Di Hapus!!');
+        return redirect('/clients')->with('delete', 'Data Client Telah Berhasil Di Hapus!!');
     }
 }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->foreignId('id_kategori');
+            $table->foreignId('client_id');
             $table->timestamps();
         });
     }

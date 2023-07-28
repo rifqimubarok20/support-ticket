@@ -13,13 +13,17 @@ class Product extends Model
 
     protected $fillable = [
         'nama',
+        'id_kategori',
+        'client_id'
     ];
 
-    public function kategori() {
+    public function kategori()
+    {
         return $this->belongsTo('App\Models\kategori', 'id_kategori');
     }
 
-    public function project() {
+    public function project()
+    {
         return $this->hasMany(Project::class);
     }
 

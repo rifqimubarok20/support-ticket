@@ -17,6 +17,23 @@
         </div>
     </div>
 
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="list-unstyled mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <!-- Pesan sukses -->
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <div class="col-lg-8">
         <form action="/user/{{ $user->id }}" method="POST" enctype="multipart/form-data">
             @csrf
@@ -34,13 +51,41 @@
             <div class="from-group mb-3">
                 <label for="email" class="form-label">Email</label>
                 <input type="text" class="form-control @error('email') is-invalid @enderror" id="email"
-                    value="{{ old('email', $user->email) }}" placeholder="Masukkan email Perusahaan..." required>
+                    name="email" value="{{ old('email', $user->email) }}" placeholder="Masukkan email Perusahaan..."
+                    required>
                 @error('email')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
                 @enderror
             </div>
+            {{-- <div class="from-group mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control @error('password') is-invalid @enderror" id="password"
+                    name="password" value="{{ old('password') }}" placeholder="Masukkan password Baru..." required>
+                @error('password')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div> --}}
+            @if ($user->role == 'client')
+                <div class="from-group mb-3">
+                    <label for="role" class="form-label">Unit</label>
+                    <select name="client_id" id="unit" class="form-control @error('unit') is-invalid @enderror">
+                        <option value="{{ $user->client ? $user->client->id : '' }}" selected>
+                            {{ $user->client ? $user->client->name : '- Pilih Perusahaan -' }}</option>
+                        @foreach ($client as $cl)
+                            <option value="{{ $cl->id }}">{{ $cl->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('unit')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+            @endif
             <div class="from-group mb-3">
                 <label for="image" class="form-label">Foto Profile</label>
                 <input type="hidden" name="oldImage" value="{{ $user->image }}">
@@ -61,8 +106,8 @@
             @enderror
             <br>
             <div class="from-group">
-                <button type="submit" class="btn bg-gradient-primary text-white">Update</button>
                 <a href="/user" class="btn bg-gradient-danger text-white">Kembali</a>
+                <button type="submit" class="btn bg-gradient-primary text-white">Simpan</button>
             </div>
         </form>
     </div>

@@ -6,12 +6,15 @@ use App\Models\Client;
 use App\Models\Product;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $user = auth()->user();
-        
+
         if ($user->role === "admin" || $user->role === "programmer") {
             $product = Product::all();
         } else {
@@ -21,7 +24,8 @@ class ProductController extends Controller
         return view('product.index', compact('product'));
     }
 
-    public function create() {
+    public function create()
+    {
         $kategori = Kategori::all();
         $client = Client::all();
         return view('product.tambah', [
@@ -30,14 +34,23 @@ class ProductController extends Controller
         ]);
     }
 
-    public function store(Request $request) {
-        $validated = $request->validate([
-            'nama' => 'required',
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'nama' => 'required|unique:product,nama,NULL,id,client_id,' . $request->client_id,
             'id_kategori' => 'required',
             'client_id' => 'required'
         ], [
-            'kategori.required' => 'Kategori tidak boleh kosong'
+            'nama.unique' => 'Klien Terkait Sudah Memiliki Produk Tersebut',
+            'id_kategori.required' => 'Kategori tidak boleh kosong',
+            'client_id.required' => 'Klien tidak boleh kosong'
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('products.create')
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         $product = new Product();
         $product->nama = $request->nama;
@@ -45,7 +58,7 @@ class ProductController extends Controller
         $product->client_id = $request->client_id;
         $product->save();
         return redirect()->route('products.index')
-            ->with('success', 'Produk berhasil dibuat!');
+            ->with('success', 'Produk Berhasil di Tambahkan!');
     }
 
     public function edit($id)
@@ -56,22 +69,52 @@ class ProductController extends Controller
         return view('product.edit', compact('product', 'kategori', 'client'));
     }
 
-    public function update(Request $request, $id) {
-        $validated = $request->validate([
-            'nama' => 'required',
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
             'id_kategori' => 'required',
-            'client_id' => 'required'
         ], [
-            'id_kategori.required' => 'Kategori tidak boleh kosong'
+            'id_kategori.required' => 'Kategori tidak boleh kosong',
         ]);
 
+        if ($validator->fails()) {
+            return redirect()->route('products.edit', $id)
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $product = Product::findOrFail($id);
-        $product->nama = $request->nama;
-        $product->id_kategori = $request->id_kategori;
-        $product->client_id = $request->client_id;
-        $product->save();
+
+        // Cek apakah kategori berubah
+        if ($product->id_kategori != $request->id_kategori) {
+            $kategoriValidator = Validator::make($request->all(), [
+                'nama' => [
+                    'required',
+                    Rule::unique('product')->where(function ($query) use ($product) {
+                        return $query->where('client_id', $product->client_id);
+                    })->ignore($id)
+                ],
+                'client_id' => 'required'
+            ], [
+                'nama.required' => 'Nama produk harus diisi.',
+                'nama.unique' => 'Klien Terkait Sudah Memiliki Produk Tersebut',
+                'client_id.required' => 'Klien tidak boleh kosong'
+            ]);
+
+            if ($kategoriValidator->fails()) {
+                return redirect()->route('products.edit', $id)
+                    ->withErrors($kategoriValidator)
+                    ->withInput();
+            }
+        }
+        // Update hanya jika kategori berubah
+        if ($product->id_kategori != $request->id_kategori) {
+            $product->id_kategori = $request->id_kategori;
+            $product->save();
+        }
+
         return redirect()->route('products.index')
-            ->with('success', 'Produk berhasil di Update!');
+            ->with('update', 'Produk Berhasil di Update!');
     }
 
     public function destroy($id)
@@ -79,6 +122,6 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $product->delete();
         return redirect()->route('products.index')
-            ->with('success', 'Dokumen berhasil di Hapus!');
+            ->with('delete', 'Produk Berhasil di Hapus!');
     }
 }

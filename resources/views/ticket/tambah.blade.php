@@ -6,6 +6,7 @@
     @php
         use Carbon\Carbon;
     @endphp
+
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800"><strong>Ticket /</strong> Tambah Ticket</h1>
@@ -27,26 +28,30 @@
             <h6 class="m-0 font-weight-bold text-primary">Input Support Ticket</h6>
         </div>
         <div class="card-body">
-            <form action="/ticket" method="post" enctype="multipart/form-data" onsubmit="onFormSubmit()">
+            <form action="/ticket" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-9">
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="product">Product</label>
                                 <select class="custom-select mr-sm-2" id="product" name="product_id" required>
                                     <option value="" selected hidden>Pilih Product</option>
                                     @foreach ($project as $prd)
+                                        @php
+                                            $tanggal = \Carbon\Carbon::parse($prd->finish_project);
+                                            $tanggal->locale('id');
+                                        @endphp
                                         @if (Carbon::now()->gt($prd->finish_project))
                                             <option value="{{ $prd->product->id }}" style="color: #a2a2a5" disabled>
                                                 {{ $prd->product->nama }} -
                                                 (Support Sudah tidak Berlaku sejak
-                                                {{ $prd->finish_project }})
+                                                {{ $tanggal->isoFormat('D MMMM YYYY') }})
                                             </option>
                                         @else
                                             <option value="{{ $prd->product->id }}" class="py-3">
                                                 {{ $prd->product->nama }} - (Support
-                                                Berlaku Sampai {{ $prd->finish_project }})</option>
+                                                Berlaku Sampai {{ $tanggal->isoFormat('D MMMM YYYY') }})</option>
                                         @endif
                                     @endforeach
                                 </select>
@@ -57,21 +62,19 @@
 
                         <div class="form-row">
                             <div class="form-group col-md-12">
-                                <label for="file">File input</label>
+                                <label for="file">Attach Assignment</label>
                                 <input type="file" class="form-control-file" name="file" id="file" required>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="issue">Issue</label>
-                                <textarea class="form-control" id="issue" name="issue" rows="5" placeholder="Masukkan Issue..." required></textarea>
+                                <textarea class="form-control" id="summernote" name="issue" rows="5" placeholder="Masukkan Issue..." required></textarea>
                             </div>
                         </div>
-                        <div class="form-row justify-content-end">
-                            <a href="/ticket" class="btn btn-danger my-3 px-4 mr-2">Back</a>
-                            <button type="submit" class="btn btn-primary my-3 px-4">Submit</button>
+                        <div class="form-row justify-content-start">
+                            <a href="/ticket" class="btn btn-danger my-3 px-4 mr-2">Kembali</a>
+                            <button type="submit" class="btn btn-primary my-3 px-4">Simpan</button>
                         </div>
                     </div>
                 </div>

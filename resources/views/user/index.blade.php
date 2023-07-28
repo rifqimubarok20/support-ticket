@@ -30,57 +30,71 @@
                     <span class="icon text-white-50">
                         <i class="fas fa-plus"></i>
                     </span>
-                    <span class="text">Tambah Users</span>
+                    <span class="text">Tambah</span>
                 </a>
             </div>
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>No</th>
-                            <th>Image</th>
+                            <th width="5%">
+                                <center>No</center>
+                            </th>
+                            <th>
+                                <center>Gambar</center>
+                            </th>
                             <th>Nama</th>
                             <th>Email</th>
+                            <th>Perusahaan</th>
                             <th>Role</th>
-                            <th class="text-center">Actions</th>
+                            <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
-                            <th>No</th>
-                            <th>Image</th>
+                            <th width="5%">
+                                <center>No</center>
+                            </th>
+                            <th>
+                                <center>Gambar</center>
+                            </th>
                             <th>Nama</th>
                             <th>Email</th>
+                            <th>Perusahaan</th>
                             <th>Role</th>
-                            <th class="text-center">Actions</th>
+                            <th class="text-center">Aksi</th>
                         </tr>
                     </tfoot>
                     <tbody>
                         @foreach ($users as $usr)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
+                                <td>
+                                    <center>{{ $loop->iteration }}</center>
+                                </td>
                                 @if ($usr->image)
-                                    <td><img class="img-profile rounded-circle" style="width: 50px; height: 50px"
-                                            src="{{ asset('storage/' . $usr->image) }}">
+                                    <td>
+                                        <center><img class="img-profile rounded-circle" style="width: 50px; height: 50px"
+                                                src="{{ asset('storage/' . $usr->image) }}"></center>
                                     </td>
                                 @else
                                     <td>
-                                        <img class="img-profile rounded-circle" style="width: 50px; height: 50px"
-                                            src="{{ asset('temp') }}/img/undraw_profile.svg">
+                                        <center><img class="img-profile rounded-circle" style="width: 50px; height: 50px"
+                                                src="{{ asset('temp') }}/img/undraw_profile.svg"></center>
                                     </td>
                                 @endif
                                 <td>{{ ucfirst($usr->name) }}</td>
                                 <td>{{ $usr->email }}</td>
+                                <td>{{ $usr->client ? $usr->client->name : '-' }}</td>
                                 <td>{{ ucfirst($usr->role) }}</td>
                                 <td class="text-center">
                                     {{-- <a href="/user/{{ $usr->id }}" class="btn btn-circle btn-sm btn-primary"><i
                                             class="fa fa-eye"></i></a> --}}
-                                    <a href="/user/{{ $usr->id }}/edit" class="btn btn-circle btn-sm btn-warning"><i
-                                            class="fa fa-edit"></i></a>
+                                    <a href="/user/{{ $usr->id }}/edit" class="btn btn-circle btn-sm btn-warning"
+                                        title="Edit"><i class="fa fa-edit"></i></a>
                                     <form action="/user/{{ $usr->id }}" method="POST" class="d-inline">
                                         @method('delete')
                                         @csrf
-                                        <button class="btn btn-circle btn-sm btn-danger"
+                                        <button class="btn btn-circle btn-sm btn-danger" title="Hapus"
                                             onclick="return confirm('Yakin Mau Di Hapus?')"><i
                                                 class="fa fa-trash"></i></button>
                                     </form>

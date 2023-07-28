@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use App\Models\Client;
 use App\Models\Product;
 use App\Models\Project;
-use App\Models\ProjectDocument;
 use App\Models\Documents;
+use Illuminate\Http\Request;
+use App\Models\ProjectDocument;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ProjectController extends Controller
 {
@@ -17,7 +18,7 @@ class ProjectController extends Controller
     {
         $user = auth()->user();
         // $project = Project::where('client_id', $user->id)->with('client', 'product', 'documents')->get();
-        
+
         if ($user->role === "admin") {
             $project = Project::all();
         } else {
@@ -41,18 +42,28 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'client_id' => 'required',
-            'product_id' => 'required',
+            'product_id' => 'required|unique:project,product_id,NULL,id,client_id,' . $request->client_id,
             'start_project' => '',
             'finish_project' => '',
+        ], [
+            'product_id.unique' => 'Project Pada Klien dan Produk Tersebut Sudah Ada',
+            'client_id.required' => 'Klien Tidak Boleh Kosong'
         ]);
 
-        $project = Project::create($validated);
+        if ($validator->fails()) {
+            return redirect()->route('projects.index')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $validatedData = $validator->validated();
+        $project = Project::create($validatedData);
         if ($project) {
-            $message = 'Project berhasil dibuat!';
+            $message = 'Project Berhasil di Buat!';
         } else {
-            $message = 'Project gagal dibuat!';
+            $message = 'Project Gagal di Buat!';
         }
 
         return redirect()->route('projects.index')
@@ -86,11 +97,44 @@ class ProjectController extends Controller
         ]);
     }
 
-    public function destroy(Project $project)
+    public function edit(Project $project)
     {
-        $project = Project::findOrFail($project);
+        return view('project.index', [
+            'project' => $project
+        ]);
+    }
 
-        Project::destroy($project->id);
-        return redirect('/projects')->with('success','Data Telah Berhasil Di Hapus!!');
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'start_project' => '',
+            'finish_project' => '',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('projects.edit', $id)
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $validatedData = $validator->validated();
+
+        $project = Project::findOrFail($id);
+
+        $project->update($validatedData);
+
+        $message = 'Tanggal Project Berhasil diperbarui!';
+
+        return redirect()->route('projects.index')
+            ->with('success', $message);
+    }
+
+    public function destroy($id)
+    {
+        $projects = Project::findOrFail($id);
+
+        $projects->delete();
+        return redirect()->route('projects.index')
+            ->with('delete', 'Data Telah Berhasil Di Hapus!!');
     }
 }

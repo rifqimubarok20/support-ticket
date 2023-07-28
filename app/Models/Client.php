@@ -16,13 +16,18 @@ class Client extends Model
         'address',
         'contact',
         'image',
+        'linkedin',
+        'instagram',
+        'website',
     ];
 
-    public function project() {
+    public function project()
+    {
         return $this->hasMany(Project::class);
     }
 
-    public function user() {
+    public function user()
+    {
         return $this->hasOne(User::class);
     }
 

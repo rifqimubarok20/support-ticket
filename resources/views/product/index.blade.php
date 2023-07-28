@@ -13,9 +13,24 @@
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
-            {{-- <button type="button" class="close" data-disniss="alert" aria-hidden="true">&times;</button> --}}
             <h5><i class="icon fa fa-check-square"></i> Berhasil!!!</h5>
             {{ session('success') }}
+        </div>
+    @elseif (session()->has('update'))
+        <div class="alert alert-warning alert-dismissible col-lg-12" role='alert'>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h5><i class="icon fa fa-check-square"></i> Updated</h5>
+            {{ session('update') }}
+        </div>
+    @elseif (session()->has('delete'))
+        <div class="alert alert-danger alert-dismissible col-lg-12" role='alert'>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h5><i class="icon fa fa-check-square"></i> Deleted</h5>
+            {{ session('delete') }}
         </div>
     @endif
 
@@ -31,7 +46,7 @@
                         <span class="icon text-white-50">
                             <i class="fas fa-plus"></i>
                         </span>
-                        <span class="text">Tambah Product</span>
+                        <span class="text">Tambah</span>
                     </a>
                 </div>
             @endcan
@@ -39,23 +54,23 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>No</th>
+                            <th class="text-center" width="5%">No</th>
                             <th>Nama</th>
                             <th>Kategori</th>
-                            <th>Client</th>
+                            <th>Klien</th>
                             @can('admin')
-                                <th>Actions</th>
+                                <th class="text-center">Aksi</th>
                             @endcan
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
-                            <th>No</th>
+                            <th class="text-center" width="5%">No</th>
                             <th>Nama</th>
                             <th>Kategori</th>
-                            <th>Client</th>
+                            <th>Klien</th>
                             @can('admin')
-                                <th>Actions</th>
+                                <th class="text-center">Aksi</th>
                             @endcan
                         </tr>
                     </tfoot>
@@ -63,18 +78,18 @@
                         @php $no = 1; @endphp
                         @foreach ($product as $data)
                             <tr>
-                                <td>{{ $no++ }}</td>
+                                <td class="text-center">{{ $no++ }}</td>
                                 <td>{{ $data->nama }}</td>
                                 <td>{{ $data->kategori->name }}</td>
                                 <td>{{ $data->client->name }}</td>
                                 @can('admin')
-                                    <td>
-                                        <a href="/products/{{ $data->id }}/edit"
-                                            class="btn btn-circle btn-sm btn-warning"><i class="fa fa-edit"></i></a>
+                                    <td class="text-center">
+                                        <a href="/products/{{ $data->id }}/edit" class="btn btn-circle btn-sm btn-warning"
+                                            title="Edit"><i class="fa fa-edit"></i></a>
                                         <form action="/products/{{ $data->id }}" method="POST" class="d-inline">
                                             @method('delete')
                                             @csrf
-                                            <button class="btn btn-circle btn-sm btn-danger"
+                                            <button class="btn btn-circle btn-sm btn-danger" title="Hapus"
                                                 onclick="return confirm('Yakin Mau Di Hapus?')"><i
                                                     class="fa fa-trash"></i></button>
                                         </form>

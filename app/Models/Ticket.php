@@ -12,22 +12,32 @@ class Ticket extends Model
 {
     use HasFactory;
 
-    protected $dates = ['expired_at'];
+    protected $fillable = [
+        'no_ticket',
+        'product_id',
+        'client_id',
+        'issue',
+        'file',
+        'user_id'
+    ];
 
-    public function scopeExpired($query)
+    public function product()
     {
-        return $query->where('expired_at', '<', Carbon::now());
-    }
-
-    public function product() {
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
 
-    public function client() {
+    public function client()
+    {
         return $this->belongsTo(Client::class, 'client_id', 'id');
     }
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function ticketStatus()
+    {
+        return $this->hasMany(TicketStatus::class, 'ticket_id');
     }
 }

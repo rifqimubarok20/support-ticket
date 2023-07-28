@@ -39,6 +39,25 @@
 <!-- Page level custom scripts -->
 <script src="{{ asset('temp') }}/js/demo/datatables-demo.js"></script>
 
+<!-- Summernote-->
+<script src="{{ asset('temp') }}/vendor/summernote/summernote.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#summernote').summernote({
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['insert', ['link', 'picture', 'video']],
+                ['height', ['height']]
+            ],
+            height: 250
+        });
+    })
+</script>
+
 <script>
     document.getElementById('role').addEventListener('change', function() {
         if (this.value === 'client') {
@@ -50,13 +69,13 @@
 </script>
 
 <script>
-    function onFormSubmit() {
-        document.getElementById('formLabel').innerHTML = "New";
-
+    $(document).ready(function() {
         setTimeout(function() {
-            document.getElementById('formLabel').innerHTML = "";
-        }, 1440000);
-    }
+            $('.label').fadeOut('slow', function() {
+                $(this).remove();
+            });
+        }, 86400000);
+    });
 </script>
 
 </body>

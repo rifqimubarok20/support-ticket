@@ -48,14 +48,16 @@
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="/products">
-                    <i class="fa-brands fa-dropbox fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Product
-                </a>
-                <a class="dropdown-item" href="/projects">
-                    <i class="fa-solid fa-chart-pie fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Project
-                </a>
+                @if (Auth::user()->role == 'admin' || Auth::user()->role == 'client')
+                    <a class="dropdown-item" href="/products">
+                        <i class="fa-brands fa-dropbox fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Product
+                    </a>
+                    <a class="dropdown-item" href="/projects">
+                        <i class="fa-solid fa-chart-pie fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Project
+                    </a>
+                @endif
                 <a class="dropdown-item" href="/editprofile/{{ Auth::user()->id }}/edit">
                     <i class="fas fa-users fa-sm fa-fw mr-2 text-gray-400"></i>
                     Edit Profile
@@ -86,7 +88,7 @@
             <div class="modal-body">Apakah yakin ingin logout? 😥</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href={{ route('actionlogout') }}>Logout</a>
+                <a class="btn btn-primary" href={{ route('logout') }}>Logout</a>
             </div>
         </div>
     </div>
